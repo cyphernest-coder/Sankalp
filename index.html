@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0d12">
+  <meta name="description" content="SANKALP — Study, Focus, Achieve. A student productivity app for goals, study time, timetable and personal documents.">
+  <title>SANKALP — Study. Focus. Achieve.</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">S</div>
+        <div><strong>SANKALP</strong><span>Study. Focus. Achieve.</span></div>
+      </div>
+      <nav>
+        <button class="nav-item active" data-page="home"><span>⌂</span>Home</button>
+        <button class="nav-item" data-page="timetable"><span>▦</span>Timetable</button>
+        <button class="nav-item" data-page="focus"><span>◷</span>Focus</button>
+        <button class="nav-item" data-page="documents"><span>□</span>Documents</button>
+        <button class="nav-item" data-page="progress"><span>↗</span>Progress</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <button class="nav-item" data-page="settings"><span>⚙</span>Settings</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="mobile-brand"><div class="brand-mark">S</div><strong>SANKALP</strong></div>
+        <div class="top-actions">
+          <button class="icon-btn" id="themeBtn" title="Toggle theme">☾</button>
+          <button class="avatar" id="profileBtn" title="Profile">S</button>
+        </div>
+      </header>
+
+      <section id="page-home" class="page active">
+        <div class="hero-row">
+          <div>
+            <p class="eyebrow" id="greeting">GOOD EVENING</p>
+            <h1>Keep your <span>संकल्प</span>.<br>Make it happen.</h1>
+            <p class="muted">One focused session at a time.</p>
+          </div>
+          <button class="primary-btn hero-start" data-go="focus">Start studying <span>→</span></button>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="card goal-card">
+            <div class="card-head"><div><p class="label">TODAY'S GOAL</p><h2 id="goalText">2h 00m</h2></div><button class="small-btn" id="editGoal">Edit</button></div>
+            <div class="progress-ring" id="goalRing"><div><strong id="goalPercent">0%</strong><span>completed</span></div></div>
+            <div class="goal-stats"><span><b id="studiedToday">0m</b> studied</span><span><b id="remainingToday">2h</b> left</span></div>
+          </article>
+
+          <article class="card next-card">
+            <div class="card-head"><p class="label">NEXT ON TIMETABLE</p><button class="small-btn" data-go="timetable">View all</button></div>
+            <div id="nextClass" class="next-class empty-state">No classes added yet.<br><button class="text-btn" data-go="timetable">Add timetable →</button></div>
+          </article>
+        </div>
+
+        <div class="section-title"><h2>Quick actions</h2></div>
+        <div class="quick-grid">
+          <button class="quick-card" data-go="focus"><span class="quick-icon">◷</span><b>Study session</b><small>Start stopwatch</small></button>
+          <button class="quick-card" id="addDocQuick"><span class="quick-icon">＋</span><b>Add document</b><small>Save a file</small></button>
+          <button class="quick-card" data-go="timetable"><span class="quick-icon">▦</span><b>Timetable</b><small>See your schedule</small></button>
+          <button class="quick-card" data-go="progress"><span class="quick-icon">↗</span><b>Progress</b><small>See your week</small></button>
+        </div>
+
+        <div class="two-col">
+          <article class="card motivation">
+            <div class="card-head"><p class="label">TODAY'S MOTIVATION</p><button class="small-btn" id="newQuote">Another</button></div>
+            <blockquote id="quote">“Small progress is still progress.”</blockquote>
+            <div class="quote-line"></div>
+          </article>
+          <article class="card recent">
+            <div class="card-head"><p class="label">RECENT DOCUMENTS</p><button class="small-btn" data-go="documents">View all</button></div>
+            <div id="recentDocs" class="doc-list"><div class="empty-state">No documents yet.</div></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="page-timetable" class="page">
+        <div class="page-heading"><div><p class="eyebrow">SCHEDULE</p><h1>Timetable</h1><p class="muted">Keep your day in sight.</p></div><button class="primary-btn" id="addClassBtn">＋ Add class</button></div>
+        <div class="week-strip" id="weekStrip"></div>
+        <div class="card timetable-card"><div id="classList" class="class-list"></div></div>
+      </section>
+
+      <section id="page-focus" class="page">
+        <div class="page-heading"><div><p class="eyebrow">FOCUS MODE</p><h1>Study session</h1><p class="muted">Put the distractions away.</p></div></div>
+        <div class="focus-wrap">
+          <div class="card focus-card">
+            <div class="focus-status" id="focusStatus">READY TO FOCUS</div>
+            <div class="big-timer" id="timer">00:00:00</div>
+            <input id="subjectInput" class="subject-input" placeholder="What are you studying?">
+            <div class="timer-actions">
+              <button class="primary-btn big-action" id="timerBtn">Start session</button>
+              <button class="secondary-btn big-action" id="resetTimer">Reset</button>
+            </div>
+            <div class="focus-note">Your study time is saved on this device.</div>
+          </div>
+          <div class="card focus-side">
+            <p class="label">TODAY</p>
+            <h2 id="focusToday">0m</h2>
+            <div class="mini-progress"><span id="focusBar"></span></div>
+            <p class="muted" id="focusGoalLabel">0% of your goal</p>
+            <hr>
+            <p class="label">FOCUS TIPS</p>
+            <ul class="tips"><li>Put your phone away.</li><li>Pick one subject.</li><li>Take a short break after a session.</li></ul>
+          </div>
+        </div>
+        <div class="card blocker-preview">
+          <div><p class="label">FOCUS PROTECTION</p><h2>App blocker</h2><p class="muted">Choose distracting apps and set a focus period when SANKALP is packaged as a native Android app.</p></div>
+          <button class="secondary-btn" id="blockerInfo">Learn more</button>
+        </div>
+      </section>
+
+      <section id="page-documents" class="page">
+        <div class="page-heading"><div><p class="eyebrow">YOUR FILES</p><h1>Documents</h1><p class="muted">Your study material, organized.</p></div><button class="primary-btn" id="addDocBtn">＋ Add document</button></div>
+        <div class="search-box"><span>⌕</span><input id="docSearch" placeholder="Search your documents..."></div>
+        <div id="docCategories" class="category-grid"></div>
+        <div id="documentsList" class="documents-grid"></div>
+        <input id="fileInput" type="file" hidden multiple>
+      </section>
+
+      <section id="page-progress" class="page">
+        <div class="page-heading"><div><p class="eyebrow">YOUR JOURNEY</p><h1>Progress</h1><p class="muted">Consistency beats intensity.</p></div></div>
+        <div class="stats-grid">
+          <article class="stat-card"><span>Total study</span><strong id="totalStudy">0h 00m</strong><small>all recorded sessions</small></article>
+          <article class="stat-card"><span>Sessions</span><strong id="sessionCount">0</strong><small>completed sessions</small></article>
+          <article class="stat-card"><span>Best day</span><strong id="bestDay">0m</strong><small>most study in one day</small></article>
+          <article class="stat-card"><span>Streak</span><strong id="streak">0 days</strong><small>consecutive study days</small></article>
+        </div>
+        <article class="card chart-card"><div class="card-head"><p class="label">LAST 7 DAYS</p><span class="muted" id="weeklyTotal">0m</span></div><div id="chart" class="chart"></div></article>
+        <article class="card sessions-card"><div class="card-head"><p class="label">RECENT SESSIONS</p></div><div id="sessionList"></div></article>
+      </section>
+
+      <section id="page-settings" class="page">
+        <div class="page-heading"><div><p class="eyebrow">PERSONALIZE</p><h1>Settings</h1><p class="muted">Make SANKALP yours.</p></div></div>
+        <div class="settings-list card">
+          <div class="setting"><div><b>Daily study goal</b><small>Current goal: <span id="settingsGoal">2h</span></small></div><button class="small-btn" id="settingsGoalBtn">Change</button></div>
+          <div class="setting"><div><b>Appearance</b><small>Switch between light and dark mode</small></div><button class="small-btn" id="settingsThemeBtn">Toggle</button></div>
+          <div class="setting"><div><b>Data</b><small>Your app data is stored locally in this browser.</small></div><button class="small-btn danger" id="clearData">Clear data</button></div>
+          <div class="setting about"><div><b>SANKALP</b><small>Study. Focus. Achieve.<br>V1 student productivity prototype.</small></div><span class="version">v1.0</span></div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-page="home"><span>⌂</span>Home</button>
+      <button class="nav-item" data-page="timetable"><span>▦</span>Schedule</button>
+      <button class="nav-item focus-nav" data-page="focus"><span>◷</span>Focus</button>
+      <button class="nav-item" data-page="documents"><span>□</span>Files</button>
+      <button class="nav-item" data-page="progress"><span>↗</span>Progress</button>
+    </nav>
+  </div>
+
+  <div class="modal" id="goalModal">
+    <div class="modal-card">
+      <button class="modal-close" data-close="goalModal">×</button>
+      <p class="eyebrow">DAILY GOAL</p><h2>How long do you want to study?</h2>
+      <div class="goal-options">
+        <button data-hours="1">1 hour</button><button data-hours="2">2 hours</button><button data-hours="3">3 hours</button><button data-hours="4">4 hours</button>
+      </div>
+      <label class="field-label">Custom minutes</label><input id="customGoal" type="number" min="15" max="1440" placeholder="e.g. 150">
+      <button class="primary-btn full" id="saveGoal">Save goal</button>
+    </div>
+  </div>
+
+  <div class="modal" id="classModal">
+    <div class="modal-card">
+      <button class="modal-close" data-close="classModal">×</button>
+      <p class="eyebrow">TIMETABLE</p><h2>Add a class</h2>
+      <label class="field-label">Day</label><select id="classDay"></select>
+      <label class="field-label">Time</label><input id="classTime" type="time">
+      <label class="field-label">Subject</label><input id="classSubject" placeholder="e.g. Physics">
+      <label class="field-label">Room / teacher <span class="optional">optional</span></label><input id="classMeta" placeholder="e.g. Room 204">
+      <button class="primary-btn full" id="saveClass">Add to timetable</button>
+    </div>
+  </div>
+
+  <div class="modal" id="docModal">
+    <div class="modal-card">
+      <button class="modal-close" data-close="docModal">×</button>
+      <p class="eyebrow">DOCUMENT</p><h2>Add your file</h2>
+      <label class="field-label">File</label>
+      <button class="file-picker" id="pickFile">Choose a file</button>
+      <div id="chosenFile" class="chosen-file">No file selected</div>
+      <label class="field-label">Name</label><input id="docName" placeholder="e.g. Physics 2025 Paper">
+      <label class="field-label">Category</label>
+      <select id="docCategory"><option>Question Papers</option><option>Notes</option><option>Assignments</option><option>Syllabus</option><option>Practical</option><option>Other</option></select>
+      <button class="primary-btn full" id="saveDoc">Save document</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
