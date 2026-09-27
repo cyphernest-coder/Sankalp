@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cyphernest-coder.github.io/Sankalp/sitemap.xml
