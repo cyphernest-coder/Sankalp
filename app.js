@@ -1,240 +1,81 @@
-const $ = (s) => document.querySelector(s);
-const $$ = (s) => [...document.querySelectorAll(s)];
-const KEY = "sankalp_v1";
+(() => {
+  'use strict';
+  const KEY = 'sankalp.v1';
+  const MAX_FILE = 100 * 1024 * 1024;
+  const $ = (s, root = document) => root.querySelector(s);
+  const $$ = (s, root = document) => [...root.querySelectorAll(s)];
+  const localDate = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const isoToday = () => localDate();
+  const uid = () => crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  const defaultState = () => ({version:1,settings:{theme:'system',dailyGoal:120,reminders:false,reminderTime:'18:00'},goals:[],sessions:[],events:[],checkins:[]});
+  let state = loadState();
+  let activePage = 'home', timer = {startedAt:null,elapsed:0,interval:null,running:false}, calendarDate = new Date(), toastTimer;
+  const quotes = ['Small progress is still progress.','You are allowed to learn one step at a time.','Show up for the goal you believe in.','A little focus can change the shape of your day.','Keep your संकल्प. Make it happen.'];
 
-const defaultState = {
-  goal: 120,
-  theme: "dark",
-  classes: [],
-  docs: [],
-  sessions: [],
-  quoteIndex: 0
-};
+  function loadState(){try{const raw=localStorage.getItem(KEY);if(!raw)return defaultState();const x=JSON.parse(raw);return { ...defaultState(),...x,settings:{...defaultState().settings,...x.settings},goals:Array.isArray(x.goals)?x.goals:[],sessions:Array.isArray(x.sessions)?x.sessions:[],events:Array.isArray(x.events)?x.events:[],checkins:Array.isArray(x.checkins)?x.checkins:[]};}catch{return defaultState();}}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));return true;}catch{toast('Could not save your changes. Browser storage may be full.');return false;}}
+  function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2900);}
+  function fmt(min){min=Math.max(0,Math.round(min));const h=Math.floor(min/60),m=min%60;return h?`${h}h ${String(m).padStart(2,'0')}m`:`${m}m`;}
+  function fmtLong(ms){const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60),sec=s%60;return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;}
+  function dateLabel(d){return new Intl.DateTimeFormat(undefined,{weekday:'short',month:'short',day:'numeric'}).format(new Date(`${d}T12:00:00`));}
+  function categoryFor(goal){return goal.category||'Personal';}
+  function todayMinutes(){return state.sessions.filter(s=>s.date===isoToday()).reduce((a,s)=>a+s.minutes,0)+(timer.running?Math.floor(elapsedMs()/60000):0);}
+  function goalPercent(g){const ms=g.milestones||[];return ms.length?Math.round(ms.filter(m=>m.done).length/ms.length*100):(g.done?100:0);}
+  function applyTheme(){const pref=state.settings.theme||'system',light=pref==='light'||(pref==='system'&&matchMedia('(prefers-color-scheme: light)').matches);document.body.dataset.theme=light?'light':'dark';$('#themeToggle').innerHTML=`${light?'☀':'☾'} <span>Appearance</span>`;$('#appearance').value=pref;}
+  function navigate(page){if(!$(`#page-${page}`))return;activePage=page;$$('.page').forEach(p=>p.classList.toggle('active',p.id===`page-${page}`));$$('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));$('#pageTitle').textContent=({home:'Good day.',goals:'Your goals',schedule:'Your schedule',focus:'Focus mode',files:'Your documents',progress:'Your progress',settings:'Your settings'})[page]||'Sankalp';if(page==='schedule')renderCalendar();if(page==='progress')renderProgress();window.scrollTo({top:0,behavior:'smooth'});}
+  function renderHome(){const mins=todayMinutes(),target=state.settings.dailyGoal||120,pct=Math.min(100,Math.round(mins/target*100));$('#todayGoalText').textContent=fmt(target);$('#todayStudied').textContent=fmt(mins);$('#todayRemaining').textContent=fmt(Math.max(0,target-mins));$('#todayPercent').textContent=`${pct}%`;$('#dailyBar').style.width=`${pct}%`;$('#nextClass').innerHTML=nextEventMarkup();renderGoalCards($('#homeGoals'),state.goals.slice(0,3));const g=state.goals.find(x=>!x.done);const m=g?.milestones?.find(x=>!x.done);$('#todayActionTitle').textContent=m?.name||(!g?'Choose one small step':'Your next small step');$('#todayActionDetail').textContent=m?(g.name+(m.deadline?` · due ${dateLabel(m.deadline)}`:'')):(!g?'Your next milestone can turn a big goal into today’s clear action.':'Add a milestone to map out your path.');$('#todayActionProgress').textContent=m?`${g.milestones.filter(x=>x.done).length} / ${g.milestones.length} steps · ${g.name}`:(g?g.name:'No active goal yet');$('#startTodayAction').disabled=!g;$('#startTodayAction').onclick=()=>{if(g){$('#sessionSubject').value=m?.name||g.name;$('#sessionGoal').value=g.id;navigate('focus');}};}
+  function renderGoalCards(container,goals){container.innerHTML=goals.map(g=>goalMarkup(g)).join('');wireGoalCards(container);}
+  function goalMarkup(g){const ms=g.milestones||[],done=ms.filter(x=>x.done).length,percent=goalPercent(g),ready=ms.length>0&&done===ms.length;return `<article class="card goal-card" data-goal="${esc(g.id)}"><div class="goal-card-head"><div><p class="eyebrow green">${esc(categoryFor(g).toUpperCase())}${g.targetDate?` · DUE ${esc(dateLabel(g.targetDate).toUpperCase())}`:''}${g.done?' · COMPLETED':''}</p><h3 class="goal-title">${esc(g.name)}</h3>${g.why?`<p class="goal-reason">${esc(g.why)}</p>`:''}</div><button class="icon-button goal-menu" aria-label="Edit ${esc(g.name)}">⋯</button></div>${ms.length?`<div class="goal-path" aria-label="Goal journey">${ms.map((m,i)=>`<div class="path-step ${m.done?'done':''}" title="${esc(m.name)}"><span class="path-dot">${m.done?'✓':i+1}</span><span>${esc(m.name)}</span></div>`).join('')}</div>`:`<div class="empty-state">Your goal path is ready for its first milestone.</div>`}${ms.length?`<details class="milestone-manager"><summary>Manage milestones</summary><div class="manage-step-list">${ms.map((m,i)=>`<div class="manage-step" data-step="${esc(m.id)}"><button class="step-toggle" aria-label="${m.done?'Reopen':'Complete'} ${esc(m.name)}">${m.done?'✓':'○'}</button><span class="manage-step-name"><strong>${esc(m.name)}</strong><small>${m.deadline?`Due ${esc(dateLabel(m.deadline))}`:'Optional deadline'}${m.notes?` · ${esc(m.notes)}`:''}</small></span><button class="text-small step-edit">Edit</button><button class="text-small step-up" aria-label="Move ${esc(m.name)} earlier" ${i===0?'disabled':''}>↑</button><button class="text-small step-down" aria-label="Move ${esc(m.name)} later" ${i===ms.length-1?'disabled':''}>↓</button><button class="text-small step-delete" aria-label="Delete ${esc(m.name)}">×</button></div>`).join('')}</div></details>`:''}<div class="goal-footer"><span class="goal-progress">${g.done?'Goal completed':`${percent}% complete · ${done} of ${ms.length} milestones`}</span><div class="goal-actions"><button class="text-small add-milestone">＋ Milestone</button>${ms.some(m=>!m.done)&&!g.done?`<button class="text-small complete-next">Complete next</button>`:''}${ready&&!g.done?`<button class="text-small finish-goal">Complete goal</button>`:''}<button class="text-small delete-goal">Delete</button></div></div></article>`;}
+  function wireGoalCards(root){$$('.goal-card',root).forEach(card=>{const g=state.goals.find(x=>x.id===card.dataset.goal);if(!g)return;$('.goal-menu',card).onclick=()=>openGoalForm(g);$('.add-milestone',card).onclick=()=>openMilestoneForm(g);$('.delete-goal',card).onclick=()=>deleteGoal(g);const next=$('.complete-next',card);if(next)next.onclick=()=>{const m=g.milestones.find(x=>!x.done);m.done=true;m.completedAt=isoToday();save();renderAll();toast('Milestone completed. Nice work.');};const finish=$('.finish-goal',card);if(finish)finish.onclick=()=>{g.done=true;g.completedAt=isoToday();save();renderAll();toast('Goal completed. Take a moment to celebrate.');};$$('.manage-step',card).forEach(row=>{const m=g.milestones.find(x=>x.id===row.dataset.step);if(!m)return;$('.step-toggle',row).onclick=()=>{m.done=!m.done;m.completedAt=m.done?isoToday():'';save();renderAll();};$('.step-edit',row).onclick=()=>openMilestoneForm(g,m);$('.step-up',row).onclick=()=>moveMilestone(g,m,-1);$('.step-down',row).onclick=()=>moveMilestone(g,m,1);$('.step-delete',row).onclick=()=>deleteMilestone(g,m);});});}
+  function moveMilestone(g,m,delta){const i=g.milestones.indexOf(m),j=i+delta;if(j<0||j>=g.milestones.length)return;g.milestones.splice(i,1);g.milestones.splice(j,0,m);save();renderAll();}
+  function deleteMilestone(g,m){if(!confirm(`Delete milestone “${m.name}” from “${g.name}”?`))return;g.milestones=g.milestones.filter(x=>x.id!==m.id);save();renderAll();toast('Milestone deleted.');}
+  function renderGoals(){renderGoalCards($('#goalsPageList'),state.goals);const empty=!state.goals.length;$('#goalsEmpty').classList.toggle('hidden',!empty);$('#goalsPageList').classList.toggle('hidden',empty);}
+  function eventDateSort(e){return `${e.day}-${e.time||'23:59'}`;}
+  function nextEventMarkup(){const day=new Date().getDay(),days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],now=new Date(),candidates=state.events.map(e=>({e,delta:(e.dayIndex-day+7)%7})).filter(x=>x.delta>0||(x.delta===0&&x.e.time>now.toTimeString().slice(0,5))).sort((a,b)=>a.delta-b.delta||a.e.time.localeCompare(b.e.time));if(!candidates.length)return `<span>No classes added yet.</span><br><button class="text-button" data-page="schedule">Add timetable →</button>`;const {e,delta}=candidates[0];return `<strong>${esc(e.title)}</strong><small>${delta===0?'Today':days[(day+delta)%7]} · ${esc(e.time)}${e.room?` · ${esc(e.room)}`:''}</small>`;}
+  function renderSchedule(){const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];const list=$('#scheduleList');list.innerHTML=[...state.events].sort((a,b)=>a.dayIndex-b.dayIndex||a.time.localeCompare(b.time)).map(e=>`<div class="schedule-item" data-event="${esc(e.id)}"><span class="schedule-time">${days[e.dayIndex]}<br>${esc(e.time)}</span><span><strong>${esc(e.title)}</strong><small>${esc(e.kind||'Study block')}${e.room?` · ${esc(e.room)}`:''}</small></span><span class="schedule-actions"><button class="text-small edit-event">Edit</button><button class="text-small delete-event">Delete</button></span></div>`).join('');$('#scheduleEmpty').classList.toggle('hidden',state.events.length>0);list.classList.toggle('hidden',!state.events.length);$$('.schedule-item',list).forEach(row=>{const e=state.events.find(x=>x.id===row.dataset.event);$('.edit-event',row).onclick=()=>openEventForm(e);$('.delete-event',row).onclick=()=>{if(confirm(`Delete “${e.title}” from your timetable?`)){state.events=state.events.filter(x=>x.id!==e.id);save();renderAll();}};});}
+  function renderCalendar(){const y=calendarDate.getFullYear(),mo=calendarDate.getMonth();$('#calendarMonth').textContent=new Intl.DateTimeFormat(undefined,{month:'long',year:'numeric'}).format(calendarDate);const first=new Date(y,mo,1),start=(first.getDay()+6)%7,days=new Date(y,mo+1,0).getDate(),prevDays=new Date(y,mo,0).getDate(),names=['M','T','W','T','F','S','S'];let h=names.map(x=>`<div class="calendar-dayname">${x}</div>`).join('');const milestoneDates=state.goals.flatMap(g=>(g.milestones||[]).filter(m=>m.deadline).map(m=>m.deadline)).concat(state.goals.filter(g=>g.targetDate&&!g.done).map(g=>g.targetDate));for(let i=0;i<42;i++){let n=i-start+1,cur=n>0&&n<=days,day=cur?n:n<=0?prevDays+n:n-days,date=new Date(y,mo+(cur?0:n<=0?-1:1),day),key=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`,today=key===isoToday(),study=state.sessions.some(s=>s.date===key),deadline=milestoneDates.includes(key),scheduled=state.events.some(e=>e.dayIndex===date.getDay());h+=`<div class="calendar-date ${cur?'':'dim'} ${today?'today':''}" aria-label="${esc(dateLabel(key))}">${day}<div class="calendar-indicators">${study?'<i class="dot study"></i>':''}${deadline?'<i class="dot deadline"></i>':''}${scheduled?'<i class="dot schedule"></i>':''}</div></div>`;}$('#calendarGrid').innerHTML=h;}
+  function renderFocus(){const min=todayMinutes(),target=state.settings.dailyGoal||120;$('#focusTodayTime').textContent=fmt(min);$('#focusDailyTarget').textContent=fmt(target);$('#focusDailyBar').style.width=`${Math.min(100,min/target*100)}%`;$('#sessionGoal').innerHTML='<option value="">No goal selected</option>'+state.goals.filter(g=>!g.done).map(g=>`<option value="${esc(g.id)}">${esc(g.name)}</option>`).join('');$('#recentSessions').innerHTML=state.sessions.slice(-4).reverse().map(s=>`<div class="mini-item"><span>${esc(s.subject||'Study session')}</span><span>${fmt(s.minutes)}</span></div>`).join('')||'<span class="muted" style="font-size:11px">Your first session is waiting.</span>';}
+  function renderProgress(){const total=state.sessions.reduce((a,s)=>a+s.minutes,0),doneGoals=state.goals.filter(g=>g.done).length,doneMilestones=state.goals.reduce((a,g)=>a+(g.milestones||[]).filter(m=>m.done).length,0);$('#totalStudyMetric').textContent=fmt(total);$('#sessionMetric').textContent=state.sessions.length;$('#milestoneMetric').textContent=doneMilestones;$('#completedGoalMetric').textContent=doneGoals;const monday=new Date();monday.setHours(0,0,0,0);monday.setDate(monday.getDate()-(monday.getDay()+6)%7);const data=Array.from({length:7},(_,i)=>{const d=new Date(monday);d.setDate(d.getDate()+i);const key=localDate(d);return {key,label:new Intl.DateTimeFormat(undefined,{weekday:'short'}).format(d).slice(0,2),min:state.sessions.filter(s=>s.date===key).reduce((a,s)=>a+s.minutes,0)}}),max=Math.max(60,...data.map(x=>x.min));$('#weekTotal').textContent=`${fmt(data.reduce((a,x)=>a+x.min,0))} this week`,$('#weekChart').innerHTML=data.map(x=>`<div class="chart-day"><span class="chart-bar-wrap"><span class="chart-bar" style="height:${Math.max(3,x.min/max*100)}%"></span></span><small>${x.label}</small><em>${x.min?fmt(x.min):'—'}</em></div>`).join('');const active=new Set([...state.sessions.map(s=>s.date),...state.checkins.map(c=>c.date)].filter(Boolean));$('#activeDays').textContent=active.size;$('#totalCheckins').textContent=state.checkins.length;const streaks=calculateStreaks(active);$('#currentStreak').textContent=streaks.current;$('#longestStreak').textContent=`${streaks.longest} ${streaks.longest===1?'day':'days'}`;const acts=[...state.sessions.map(s=>({date:s.date,icon:'◷',title:s.subject||'Study session',detail:`${fmt(s.minutes)} focused`})),...state.checkins.map(c=>({date:c.date,icon:'✓',title:`Daily check-in · ${c.status}`,detail:c.note||'Worked toward a goal'})),...state.goals.flatMap(g=>(g.milestones||[]).filter(m=>m.done&&m.completedAt).map(m=>({date:m.completedAt,icon:'✦',title:m.name,detail:`Milestone · ${g.name}`})))].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,7);$('#activityList').innerHTML=acts.map(a=>`<div class="activity-item"><span class="activity-symbol">${a.icon}</span><span><strong>${esc(a.title)}</strong><small>${esc(a.detail)} · ${esc(dateLabel(a.date))}</small></span></div>`).join('');$('#activityEmpty').classList.toggle('hidden',acts.length>0);renderAchievements(doneGoals,doneMilestones);}
+  function calculateStreaks(active){let current=0,longest=0,run=0;const d=new Date();d.setHours(0,0,0,0);const today=localDate(d),y=new Date(d);y.setDate(y.getDate()-1);const yesterday=localDate(y);let cursor=new Date(d);if(!active.has(today))cursor.setDate(cursor.getDate()-1);const startDate=localDate(cursor);if(startDate===today||startDate===yesterday){while(active.has(localDate(cursor))){current++;cursor.setDate(cursor.getDate()-1);}}const dates=[...active].sort();let prev=null;for(const key of dates){const date=new Date(`${key}T12:00:00`);if(prev){const delta=(date-prev)/86400000;run=delta===1?run+1:1;}else run=1;longest=Math.max(longest,run);prev=date;}return {current,longest};}
+  function renderAchievements(doneGoals,doneMilestones){const sessions=state.sessions.length,total=state.sessions.reduce((a,s)=>a+s.minutes,0),active=new Set([...state.sessions.map(s=>s.date),...state.checkins.map(c=>c.date)]),streak=calculateStreaks(active).longest;const items=[['🏁','First Step','Complete your first study session.',sessions>=1],['🔥','7 Day Streak','Work toward a goal for 7 days.',streak>=7],['🎯','Goal Complete','Complete your first goal.',doneGoals>=1],['📚','10 Sessions','Complete 10 focused study sessions.',sessions>=10],['⏱️','10 Hours','Reach 10 total hours of study.',total>=600],['✦','Path Builder','Complete 5 milestones.',doneMilestones>=5]];$('#achievementList').innerHTML=items.map(a=>`<div class="achievement ${a[3]?'':'locked'}"><span class="achievement-icon">${a[0]}</span><span><strong>${a[1]}</strong><small>${a[2]}</small></span></div>`).join('');}
+  function renderFiles(){const q=$('#fileSearch').value.toLowerCase(),cat=$('#fileCategoryFilter').value;listDocuments().then(docs=>{const shown=docs.filter(d=>(!q||d.name.toLowerCase().includes(q))&&(!cat||d.category===cat));$('#fileList').innerHTML=shown.map(d=>`<article class="card file-card" data-file="${esc(d.id)}"><span class="file-icon">${d.type==='application/pdf'?'▤':'▧'}</span><span class="file-info"><strong title="${esc(d.name)}">${esc(d.name)}</strong><small>${esc(d.category)} · ${esc(sizeLabel(d.size))}</small></span><span class="file-actions"><button class="icon-button open-file" aria-label="Open ${esc(d.name)}">↗</button><button class="icon-button delete-file" aria-label="Delete ${esc(d.name)}">×</button></span></article>`).join('');$('#filesEmpty').classList.toggle('hidden',docs.length>0);$$('.file-card').forEach(card=>{const d=docs.find(x=>x.id===card.dataset.file);$('.open-file',card).onclick=()=>openDocument(d.id);$('.delete-file',card).onclick=()=>deleteDocument(d);});});}
+  function sizeLabel(n){return n>=1048576?`${(n/1048576).toFixed(1)} MB`:`${Math.max(1,Math.round(n/1024))} KB`;}
+  function renderAll(){applyTheme();$('#dateLabel').textContent=new Intl.DateTimeFormat(undefined,{weekday:'long',month:'long',day:'numeric'}).format(new Date()).toUpperCase();renderHome();renderGoals();renderSchedule();renderCalendar();renderFocus();renderProgress();$('#dailyGoalInput').value=state.settings.dailyGoal;$('#reminderTime').value=state.settings.reminderTime||'18:00';$('#notificationBtn').textContent=state.settings.reminders?'Disable reminders':'Enable reminders';renderFiles();}
 
-let state = loadState();
-let timer = { running:false, startedAt:0, elapsed:0, interval:null };
+  const dbPromise=new Promise((resolve,reject)=>{if(!('indexedDB'in window)){reject(Error('IndexedDB is unavailable'));return;}const req=indexedDB.open('sankalp-files-v1',1);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('documents'))db.createObjectStore('documents',{keyPath:'id'});};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});
+  async function listDocuments(){try{const db=await dbPromise;return await new Promise((res,rej)=>{const r=db.transaction('documents').objectStore('documents').getAll();r.onsuccess=()=>res(r.result||[]);r.onerror=()=>rej(r.error);});}catch{return [];}}
+  async function storeDocument(doc){const db=await dbPromise;return new Promise((res,rej)=>{const tx=db.transaction('documents','readwrite');tx.objectStore('documents').add(doc);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error||Error('Storage quota exceeded'));});}
+  async function removeDocument(id){const db=await dbPromise;return new Promise((res,rej)=>{const tx=db.transaction('documents','readwrite');tx.objectStore('documents').delete(id);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);});}
+  async function openDocument(id){const docs=await listDocuments(),d=docs.find(x=>x.id===id);if(!d)return toast('This document is no longer available.');const url=URL.createObjectURL(d.blob);const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener';a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);}
+  async function deleteDocument(d){if(!confirm(`Delete “${d.name}” from this device?`))return;try{await removeDocument(d.id);renderFiles();toast('Document deleted.');}catch{toast('Could not delete this document. Please try again.');}}
 
-const quotes = [
-  "Small progress is still progress.",
-  "You do not need a perfect day. You need a focused one.",
-  "Start before you feel ready.",
-  "Your future self will thank you for today's effort.",
-  "One chapter. One session. One step.",
-  "Consistency makes ordinary effort extraordinary.",
-  "Protect your focus. Your goal deserves it.",
-  "Do less, but do it with full attention."
-];
+  function openModal(title,eyebrow,content,actions){$('#modalTitle').textContent=title;$('#modalEyebrow').textContent=eyebrow;$('#modalBody').innerHTML=content;$('#modalActions').innerHTML=actions;$('#modal').showModal();}
+  function closeModal(){if($('#modal').open)$('#modal').close();}
+  const cancelAction='<button class="button secondary" type="button" data-cancel>Cancel</button>';
+  function bindCancel(){const b=$('[data-cancel]');if(b)b.onclick=closeModal;}
+  function field(label,name,value='',type='text',placeholder=''){return `<label class="form-field">${label}<input name="${name}" type="${type}" value="${esc(value)}" placeholder="${esc(placeholder)}"></label>`;}
+  function openGoalForm(goal=null){const g=goal||{name:'',why:'',targetDate:'',category:'Learning',milestones:[]};openModal(goal?'Edit goal':'Create a goal','GOAL → PATH',`<label class="form-field">Goal name<input name="name" required maxlength="90" value="${esc(g.name)}" placeholder="e.g. Learn Python"></label><label class="form-field">Why does this matter to you?<textarea name="why" maxlength="240" placeholder="Your reason can help you keep going.">${esc(g.why||'')}</textarea></label><div class="form-row">${field('Target date','targetDate',g.targetDate||'','date')}<label class="form-field">Category<select name="category">${['Learning','Study','Health','Personal','Creative','Career','Other'].map(c=>`<option ${c===g.category?'selected':''}>${c}</option>`).join('')}</select></label></div><label class="form-field">Milestones <span class="muted">(one per line)</span><textarea name="milestones" placeholder="Python basics&#10;Variables&#10;Build a project">${esc((g.milestones||[]).map(m=>m.name).join('\n'))}</textarea></label>${goal?'<p class="muted" style="font-size:10px;margin:0">Completed milestone status will be preserved when names stay the same.</p>':''}`,`${goal?'<button class="button danger" type="button" id="deleteGoalModal">Delete goal</button>':''}${cancelAction}<button class="button primary" type="submit">${goal?'Save changes':'Create goal'}</button>`);bindCancel();if(goal)$('#deleteGoalModal').onclick=()=>{closeModal();deleteGoal(goal);};$('#modalForm').onsubmit=e=>{e.preventDefault();const fd=new FormData(e.currentTarget),name=String(fd.get('name')||'').trim();if(!name)return toast('Please enter a goal name.');const names=String(fd.get('milestones')||'').split('\n').map(x=>x.trim()).filter(Boolean).slice(0,30),old=new Map((g.milestones||[]).map(m=>[m.name,m]));const next={...g,id:g.id||uid(),name,why:String(fd.get('why')||'').trim(),targetDate:String(fd.get('targetDate')||''),category:String(fd.get('category')||'Learning'),done:g.done||false,milestones:names.map(n=>old.has(n)?old.get(n):{id:uid(),name:n,done:false,deadline:'',notes:''}),createdAt:g.createdAt||new Date().toISOString()};if(goal)state.goals=state.goals.map(x=>x.id===goal.id?next:x);else state.goals.unshift(next);save();closeModal();renderAll();toast(goal?'Goal updated.':'Your goal is ready.');};}
+  function deleteGoal(g){if(!confirm(`Delete “${g.name}” and its milestones? Your study sessions will stay in your history.`))return;state.goals=state.goals.filter(x=>x.id!==g.id);save();renderAll();toast('Goal deleted.');}
+  function openMilestoneForm(g,m=null){const item=m||{name:'',deadline:'',notes:''};openModal(m?'Edit milestone':'Add a milestone',g.name.toUpperCase(),`${field('Milestone name','name',item.name,'text','e.g. Python basics')}<div class="form-row">${field('Optional deadline','deadline',item.deadline||'','date')}${field('Optional notes','notes',item.notes||'','text','A small helpful detail')}</div>`,`${cancelAction}<button class="button primary" type="submit">${m?'Save milestone':'Add milestone'}</button>`);bindCancel();$('#modalForm').onsubmit=e=>{e.preventDefault();const fd=new FormData(e.currentTarget),name=String(fd.get('name')||'').trim();if(!name)return toast('Please enter a milestone name.');if(m)Object.assign(m,{name,deadline:String(fd.get('deadline')||''),notes:String(fd.get('notes')||'')});else g.milestones.push({id:uid(),name,deadline:String(fd.get('deadline')||''),notes:String(fd.get('notes')||''),done:false});save();closeModal();renderAll();toast(m?'Milestone updated.':'Milestone added.');};}
+  function openEventForm(event=null){const e=event||{title:'',dayIndex:new Date().getDay(),time:'16:00',room:'',kind:'Study block'};openModal(event?'Edit timetable item':'Add to timetable','MAKE TIME FOR IT',`<label class="form-field">Subject or activity<input name="title" required maxlength="80" value="${esc(e.title)}" placeholder="e.g. Physics study block"></label><div class="form-row"><label class="form-field">Day<select name="dayIndex">${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'].map((d,i)=>`<option value="${i}" ${i===Number(e.dayIndex)?'selected':''}>${d}</option>`).join('')}</select></label>${field('Time','time',e.time,'time')}</div><div class="form-row"><label class="form-field">Type<select name="kind">${['Study block','Class','Other'].map(x=>`<option ${x===e.kind?'selected':''}>${x}</option>`).join('')}</select></label>${field('Room / teacher (optional)','room',e.room||'','text','')}</div>`,`${cancelAction}<button class="button primary" type="submit">${event?'Save changes':'Add to timetable'}</button>`);bindCancel();$('#modalForm').onsubmit=x=>{x.preventDefault();const f=new FormData(x.currentTarget),title=String(f.get('title')||'').trim();if(!title)return toast('Please enter a subject or activity.');const item={...e,id:e.id||uid(),title,dayIndex:Number(f.get('dayIndex')),time:String(f.get('time')),kind:String(f.get('kind')),room:String(f.get('room')||'')};if(event)state.events=state.events.map(v=>v.id===event.id?item:v);else state.events.push(item);save();closeModal();renderAll();toast(event?'Timetable updated.':'Added to your timetable.');};}
+  function openCheckin(){const old=state.checkins.find(c=>c.date===isoToday());openModal('How did today go?','DAILY CHECK-IN',`<p class="muted" style="font-size:12px;margin:0">Did you work toward one of your goals today? Every answer is okay.</p><div class="checkin-options">${['Yes','Partially','Not today'].map(x=>`<label class="checkin-option"><input type="radio" name="status" value="${x}" ${old?.status===x?'checked':''} required><span>${x}</span></label>`).join('')}</div><label class="form-field">A note to yourself <span class="muted">(optional)</span><textarea name="note" maxlength="180" placeholder="e.g. Finished 15 physics questions.">${esc(old?.note||'')}</textarea></label>`,`${cancelAction}<button class="button primary" type="submit">Save check-in</button>`);bindCancel();$('#modalForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.currentTarget),status=String(f.get('status')||'');if(!status)return toast('Choose an option for your check-in.');const item={date:isoToday(),status,note:String(f.get('note')||'').trim()};if(old)state.checkins=state.checkins.map(c=>c.date===isoToday()?item:c);else state.checkins.push(item);save();closeModal();renderAll();toast('Check-in saved. Thanks for showing up.');};}
+  function startTimer(){if(timer.running)return;timer.running=true;timer.startedAt=Date.now();timer.interval=setInterval(updateTimer,400);$('#timerStatus').textContent='You’re in a focus session';$('.timer-state').classList.add('running');$('#timerStart').classList.add('hidden');$('#timerPause').classList.remove('hidden');$('#timerReset').classList.remove('hidden');$('#timerFinish').classList.remove('hidden');$('#timerDot').style.opacity=1;updateTimer();}
+  function elapsedMs(){return timer.elapsed+(timer.running?Date.now()-timer.startedAt:0);}
+  function updateTimer(){$('#timerDisplay').textContent=fmtLong(elapsedMs());}
+  function pauseTimer(){timer.elapsed=elapsedMs();timer.running=false;clearInterval(timer.interval);$('#timerStatus').textContent='Paused';$('.timer-state').classList.remove('running');$('#timerPause').classList.add('hidden');$('#timerResume').classList.remove('hidden');}
+  function resetTimer(){timer.running=false;timer.elapsed=0;timer.startedAt=null;clearInterval(timer.interval);$('#timerDisplay').textContent='00:00:00';$('#timerStatus').textContent='Ready when you are';$('.timer-state').classList.remove('running');$('#timerStart').classList.remove('hidden');$('#timerPause').classList.add('hidden');$('#timerResume').classList.add('hidden');$('#timerReset').classList.add('hidden');$('#timerFinish').classList.add('hidden');}
+  function finishTimer(){const ms=elapsedMs(),minutes=Math.max(1,Math.round(ms/60000));if(ms<15000){toast('Study for a little longer before saving a session.');return;}const g=state.goals.find(x=>x.id===$('#sessionGoal').value),session={id:uid(),date:isoToday(),minutes,subject:$('#sessionSubject').value.trim()||(g?.name||'Study session'),goalId:g?.id||'',note:$('#sessionNote').value.trim(),createdAt:new Date().toISOString()};state.sessions.push(session);save();resetTimer();$('#sessionNote').value='';renderAll();toast(`${fmt(minutes)} added to your study time.`);if(!state.checkins.some(c=>c.date===isoToday())){setTimeout(()=>{if(confirm('Would you like to add a quick daily check-in?'))openCheckin();},250);}}
 
-function loadState(){
-  try { return {...defaultState, ...JSON.parse(localStorage.getItem(KEY) || "{}")}; }
-  catch { return {...defaultState}; }
-}
-function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
-function toast(msg){
-  const t=$("#toast"); t.textContent=msg; t.classList.add("show");
-  clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove("show"),2200);
-}
-function todayKey(d=new Date()){
-  return d.toISOString().slice(0,10);
-}
-function fmtMin(min){
-  min=Math.max(0,Math.round(min));
-  const h=Math.floor(min/60), m=min%60;
-  return h ? `${h}h ${String(m).padStart(2,"0")}m` : `${m}m`;
-}
-function fmtSec(sec){
-  sec=Math.max(0,Math.floor(sec));
-  const h=Math.floor(sec/3600), m=Math.floor((sec%3600)/60), s=sec%60;
-  return [h,m,s].map(v=>String(v).padStart(2,"0")).join(":");
-}
-function dayName(i){ return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][i]; }
-function dayIndex(d=new Date()){ return d.getDay(); }
+  async function handleFile(file){if(!file)return;if(file.size>MAX_FILE){toast('This document is larger than 100 MB. Please choose a smaller file.');return;}const categories=['Notes','Question Papers','Books','Assignments','Other'];openModal('Save document','YOUR STUDY DESK',`<p style="font-size:12px;margin:0"><strong>${esc(file.name)}</strong><br><span class="muted">${sizeLabel(file.size)}</span></p><label class="form-field">Category<select name="category">${categories.map(x=>`<option>${x}</option>`).join('')}</select></label><p class="muted" style="font-size:10px;margin:0">Maximum file size: 100 MB</p>`,`${cancelAction}<button class="button primary" type="submit">Save on this device</button>`);bindCancel();$('#modalForm').onsubmit=async e=>{e.preventDefault();const category=new FormData(e.currentTarget).get('category');const saveButton=$('.modal-actions .primary');saveButton.disabled=true;saveButton.textContent='Saving…';try{await storeDocument({id:uid(),name:file.name,size:file.size,type:file.type,category,createdAt:new Date().toISOString(),blob:file});closeModal();renderFiles();toast('Document saved on this device.');}catch(err){closeModal();toast(err?.name==='QuotaExceededError'?'Your browser does not have enough storage available for this document.':'Could not save this document. Check available browser storage and try again.');}finally{saveButton.disabled=false;}};}
 
-function studiedMinutes(date=todayKey()){
-  return state.sessions.filter(s=>s.date===date).reduce((a,s)=>a+s.minutes,0);
-}
-function updateGreeting(){
-  const h=new Date().getHours();
-  $("#greeting").textContent = h<12 ? "GOOD MORNING" : h<18 ? "GOOD AFTERNOON" : "GOOD EVENING";
-}
-function updateGoal(){
-  const studied=studiedMinutes(), goal=state.goal;
-  const pct=Math.min(100, Math.round((studied/goal)*100));
-  $("#goalText").textContent=fmtMin(goal);
-  $("#goalPercent").textContent=pct+"%";
-  $("#studiedToday").textContent=fmtMin(studied);
-  $("#remainingToday").textContent=studied>=goal ? "Done" : fmtMin(goal-studied);
-  $("#goalRing").style.background=`conic-gradient(var(--accent) ${pct*3.6}deg,var(--line) 0deg)`;
-  $("#focusToday").textContent=fmtMin(studied);
-  $("#focusGoalLabel").textContent=`${pct}% of your goal`;
-  $("#focusBar").style.width=pct+"%";
-  $("#settingsGoal").textContent=fmtMin(goal);
-}
-function renderNextClass(){
-  const now=new Date(), today=dayIndex();
-  const classes=state.classes.filter(c=>c.day===today).sort((a,b)=>a.time.localeCompare(b.time));
-  const upcoming=classes.find(c=>c.time>=now.toTimeString().slice(0,5)) || classes[0];
-  const box=$("#nextClass");
-  if(!upcoming){ box.innerHTML='No classes added yet.<br><button class="text-btn" data-go="timetable">Add timetable →</button>'; bindNav(); return; }
-  box.innerHTML=`<div><div class="time">${upcoming.time}</div><strong>${escapeHtml(upcoming.subject)}</strong><div>${escapeHtml(upcoming.meta||"Today")}</div></div>`;
-}
-function renderTimetable(){
-  const strip=$("#weekStrip");
-  strip.innerHTML=Array.from({length:7},(_,i)=>{
-    const d=new Date(); d.setDate(d.getDate()+(i-d.getDay()));
-    return `<button class="day-pill ${i===dayIndex()?"active":""}" data-day="${i}"><b>${dayName(i)}</b><small>${d.getDate()}</small></button>`;
-  }).join("");
-  $$(".day-pill").forEach(b=>b.onclick=()=>renderClassDay(Number(b.dataset.day)));
-  renderClassDay(dayIndex());
-}
-function renderClassDay(day){
-  const list=$("#classList");
-  const classes=state.classes.filter(c=>c.day===day).sort((a,b)=>a.time.localeCompare(b.time));
-  if(!classes.length){list.innerHTML=`<div class="empty-state" style="padding:45px;text-align:center">No classes for ${dayName(day)}.<br><button class="text-btn" id="emptyAdd">＋ Add a class</button></div>`; $("#emptyAdd").onclick=()=>openModal("classModal"); return;}
-  list.innerHTML=classes.map(c=>`<div class="class-row"><div class="class-time">${c.time}</div><div><b>${escapeHtml(c.subject)}</b><small>${escapeHtml(c.meta||"")}</small></div><button class="delete-btn" data-delete-class="${c.id}">✕</button></div>`).join("");
-  $$("[data-delete-class]").forEach(b=>b.onclick=()=>{state.classes=state.classes.filter(c=>c.id!==b.dataset.deleteClass);save();renderAll();toast("Class removed");});
-}
-function renderDocuments(filter=""){
-  const list=$("#documentsList"), q=filter.toLowerCase();
-  const docs=state.docs.filter(d=>(d.name+" "+d.category).toLowerCase().includes(q));
-  if(!docs.length){list.innerHTML='<div class="empty-state" style="grid-column:1/-1;text-align:center;padding:55px">No matching documents.<br>Add your own study files with <b>＋ Add document</b>.</div>';return;}
-  list.innerHTML=docs.map(d=>`<article class="document-card"><div class="file-top"><div class="doc-icon">📄</div><small>${escapeHtml(d.category)}</small></div><h3>${escapeHtml(d.name)}</h3><small>${escapeHtml(d.fileName)} · ${fmtBytes(d.size)}</small><div class="doc-actions"><button class="small-btn" data-open-doc="${d.id}">Open</button><button class="small-btn danger" data-delete-doc="${d.id}">Delete</button></div></article>`).join("");
-  $$("[data-delete-doc]").forEach(b=>b.onclick=()=>{state.docs=state.docs.filter(d=>d.id!==b.dataset.deleteDoc);save();renderAll();toast("Document removed");});
-  $$("[data-open-doc]").forEach(b=>b.onclick=()=>openDocument(b.dataset.openDoc));
-}
-function renderRecent(){
-  const box=$("#recentDocs"), docs=state.docs.slice(-4).reverse();
-  if(!docs.length){box.innerHTML='<div class="empty-state">No documents yet.</div>';return;}
-  box.innerHTML=docs.map(d=>`<button class="doc-row" data-open-doc="${d.id}"><span class="doc-icon">📄</span><span><b>${escapeHtml(d.name)}</b><small>${escapeHtml(d.category)}</small></span></button>`).join("");
-  $$("[data-open-doc]").forEach(b=>b.onclick=()=>openDocument(b.dataset.openDoc));
-}
-function renderCategories(){
-  const cats=["All","Question Papers","Notes","Assignments","Syllabus","Practical","Other"];
-  $("#docCategories").innerHTML=cats.map((c,i)=>`<button class="${i===0?"active":""}" data-cat="${c}">${c}</button>`).join("");
-  $$("#docCategories button").forEach(b=>b.onclick=()=>{
-    $$("#docCategories button").forEach(x=>x.classList.remove("active")); b.classList.add("active");
-    $("#docSearch").value=b.dataset.cat==="All"?"":b.dataset.cat; renderDocuments($("#docSearch").value);
-  });
-}
-function renderProgress(){
-  const total=state.sessions.reduce((a,s)=>a+s.minutes,0);
-  $("#totalStudy").textContent=fmtMin(total);
-  $("#sessionCount").textContent=state.sessions.length;
-  const byDay={}; state.sessions.forEach(s=>byDay[s.date]=(byDay[s.date]||0)+s.minutes);
-  const vals=Object.values(byDay); $("#bestDay").textContent=fmtMin(vals.length?Math.max(...vals):0);
-  let streak=0; for(let i=0;i<365;i++){const d=new Date();d.setDate(d.getDate()-i);if((byDay[todayKey(d)]||0)>0)streak++;else break;}
-  $("#streak").textContent=streak+" day"+(streak===1?"":"s");
-  const days=Array.from({length:7},(_,i)=>{const d=new Date();d.setDate(d.getDate()-(6-i));return d});
-  const max=Math.max(60,...days.map(d=>byDay[todayKey(d)]||0));
-  $("#weeklyTotal").textContent=fmtMin(days.reduce((a,d)=>a+(byDay[todayKey(d)]||0),0));
-  $("#chart").innerHTML=days.map(d=>{const v=byDay[todayKey(d)]||0;return `<div class="bar-wrap"><span class="muted" style="font-size:10px">${v?fmtMin(v):""}</span><div class="bar" style="height:${Math.max(2,(v/max)*170)}px"></div><small>${dayName(d.getDay())}</small></div>`}).join("");
-  const sessions=state.sessions.slice(-8).reverse();
-  $("#sessionList").innerHTML=sessions.length?sessions.map(s=>`<div class="session-row"><div><b>${escapeHtml(s.subject||"Study session")}</b><small>${s.date}</small></div><strong>${fmtMin(s.minutes)}</strong></div>`).join(""):'<div class="empty-state" style="padding:20px 0">Complete a study session to see it here.</div>';
-}
-function renderQuote(){ $("#quote").textContent="“"+quotes[state.quoteIndex%quotes.length]+"”"; }
-function renderAll(){
-  updateGreeting();updateGoal();renderNextClass();renderTimetable();renderCategories();renderDocuments($("#docSearch")?.value||"");renderRecent();renderProgress();renderQuote();applyTheme();
-}
-function applyTheme(){document.documentElement.dataset.theme=state.theme;}
-function openModal(id){$("#"+id).classList.add("open")}
-function closeModal(id){$("#"+id).classList.remove("open")}
-function bindNav(){
-  $$("[data-go]").forEach(b=>b.onclick=()=>showPage(b.dataset.go));
-}
-function showPage(page){
-  $$(".page").forEach(p=>p.classList.remove("active")); $("#page-"+page).classList.add("active");
-  $$(".nav-item").forEach(n=>n.classList.toggle("active",n.dataset.page===page));
-  window.scrollTo({top:0,behavior:"smooth"});
-  if(page==="progress")renderProgress();
-}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
-function fmtBytes(n){if(!n)return "0 B";const u=["B","KB","MB","GB"];let i=0,x=n;while(x>=1024&&i<3){x/=1024;i++}return `${x<10&&i?x.toFixed(1):Math.round(x)} ${u[i]}`}
-function startTimer(){
-  if(timer.running)return;
-  timer.running=true; timer.startedAt=Date.now()-timer.elapsed*1000;
-  $("#timerBtn").textContent="Pause"; $("#focusStatus").textContent="FOCUSING";
-  timer.interval=setInterval(updateTimer,500); updateTimer();
-}
-function pauseTimer(){
-  if(!timer.running)return;
-  timer.elapsed=Math.floor((Date.now()-timer.startedAt)/1000);
-  timer.running=false;clearInterval(timer.interval);$("#timerBtn").textContent="Resume";$("#focusStatus").textContent="PAUSED";
-}
-function updateTimer(){
-  if(timer.running)timer.elapsed=Math.floor((Date.now()-timer.startedAt)/1000);
-  $("#timer").textContent=fmtSec(timer.elapsed);
-}
-function resetTimer(){
-  if(timer.elapsed>20){ if(confirm("End this session and save the time?")) finishSession(); else return; }
-  timer.running=false;clearInterval(timer.interval);timer.elapsed=0;$("#timer").textContent="00:00:00";$("#timerBtn").textContent="Start session";$("#focusStatus").textContent="READY TO FOCUS";
-}
-function finishSession(){
-  if(timer.running)pauseTimer();
-  const mins=Math.max(1,Math.round(timer.elapsed/60));
-  state.sessions.push({id:Date.now().toString(),date:todayKey(),minutes:mins,subject:$("#subjectInput").value.trim()||"Study session"});
-  save();timer.elapsed=0;$("#timer").textContent="00:00:00";$("#timerBtn").textContent="Start session";$("#focusStatus").textContent="SESSION SAVED";$("#subjectInput").value="";renderAll();toast(`Saved ${fmtMin(mins)} of study time`);
-}
-function openDocument(id){
-  const d=state.docs.find(x=>x.id===id); if(!d)return;
-  try{
-    const bytes=atob(d.data), arr=new Uint8Array(bytes.length);for(let i=0;i<bytes.length;i++)arr[i]=bytes.charCodeAt(i);
-    const blob=new Blob([arr],{type:d.type||"application/octet-stream"});const url=URL.createObjectURL(blob);window.open(url,"_blank");setTimeout(()=>URL.revokeObjectURL(url),60000);
-  }catch{toast("This document could not be opened.");}
-}
-function dataUrlSize(data){return Math.max(0,Math.floor((data.length*3)/4))}
-function readFile(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file)})}
+  function exportData(){listDocuments().then(docs=>{const backup={...state,exportedAt:new Date().toISOString(),documents:docs.map(d=>({id:d.id,name:d.name,size:d.size,type:d.type,category:d.category,createdAt:d.createdAt}))};const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='sankalp-backup.json';a.click();URL.revokeObjectURL(url);toast('Sankalp backup exported. Document file contents are not included.');});}
+  function validBackup(x){return x&&typeof x==='object'&&Array.isArray(x.goals)&&Array.isArray(x.sessions)&&Array.isArray(x.events)&&Array.isArray(x.checkins)&&x.settings&&typeof x.settings==='object'&&x.goals.every(g=>typeof g.name==='string'&&Array.isArray(g.milestones||[]))&&x.sessions.every(s=>typeof s.date==='string'&&Number.isFinite(s.minutes));}
+  async function importBackup(file){try{const x=JSON.parse(await file.text());if(!validBackup(x)){toast('This is not a valid Sankalp backup.');return;}if(!confirm('Import this backup and replace the Sankalp data currently saved on this device? Export a backup first if you want to keep the current data.'))return;state={version:1,settings:{...defaultState().settings,...x.settings},goals:x.goals,sessions:x.sessions,events:x.events,checkins:x.checkins};if(!save())return;renderAll();toast('Backup imported. Document contents are not included in backups.');}catch{toast('This is not a valid Sankalp backup.');}}
+  async function clearData(){if(!confirm('Clear all Sankalp data from this device? This removes goals, study sessions, timetable items, check-ins, settings, and saved documents. Export a backup first if you want to keep a copy.'))return;try{const db=await dbPromise;await new Promise((res,rej)=>{const tx=db.transaction('documents','readwrite');tx.objectStore('documents').clear();tx.oncomplete=res;tx.onerror=()=>rej(tx.error);});localStorage.removeItem(KEY);state=defaultState();save();renderAll();navigate('home');toast('Your local Sankalp data has been cleared.');}catch{toast('Could not clear all local data. Please try again.');}}
+  async function toggleReminders(){if(state.settings.reminders){state.settings.reminders=false;save();$('#notificationBtn').textContent='Enable reminders';toast('Reminders disabled.');return;}if(!('Notification'in window)){toast('Browser notifications are unavailable here. You can still view your timetable and deadlines.');$('#notificationHelp').textContent='Browser notifications are unavailable in this browser.';return;}if(Notification.permission==='denied'){toast('Notifications are blocked in your browser settings.');return;}if(Notification.permission==='default'){const result=await Notification.requestPermission();if(result!=='granted'){toast('Notifications were not enabled. You can change this in browser settings.');return;}}state.settings.reminders=true;state.settings.reminderTime=$('#reminderTime').value||'18:00';save();$('#notificationBtn').textContent='Disable reminders';toast('Reminders enabled for this browser.');}
+  function eventsReminder(){if(!state.settings.reminders||!('Notification'in window)||Notification.permission!=='granted')return;const now=new Date(),time=now.toTimeString().slice(0,5),day=now.getDay(),match=state.events.find(e=>e.dayIndex===day&&e.time===time);if(match&&sessionStorage.getItem(`sankalp-notified-${isoToday()}-${match.id}`)!=='1'){new Notification('Sankalp · Coming up',{body:`${match.title}${match.room?` · ${match.room}`:''}`});sessionStorage.setItem(`sankalp-notified-${isoToday()}-${match.id}`,'1');}if(time===(state.settings.reminderTime||'18:00')){for(const g of state.goals.filter(x=>!x.done)){const deadlines=[...(g.milestones||[]).map(m=>({date:m.deadline,name:m.name})),{date:g.targetDate,name:g.name}].filter(x=>x.date);for(const item of deadlines){const due=new Date(`${item.date}T12:00:00`),tomorrow=new Date();tomorrow.setDate(tomorrow.getDate()+1);if(localDate(due)===localDate(tomorrow)&&sessionStorage.getItem(`sankalp-deadline-${isoToday()}-${g.id}-${item.date}`)!=='1'){new Notification('Sankalp · Deadline tomorrow',{body:item.name});sessionStorage.setItem(`sankalp-deadline-${isoToday()}-${g.id}-${item.date}`,'1');}}}if(sessionStorage.getItem(`sankalp-daily-${isoToday()}`)!=='1'){new Notification('Sankalp · A moment for your goal',{body:'A small focused session is a good place to start.'});sessionStorage.setItem(`sankalp-daily-${isoToday()}`,'1');}}}
 
-$$(".nav-item").forEach(b=>b.onclick=()=>showPage(b.dataset.page));
-bindNav();
-
-$("#themeBtn").onclick=()=>{state.theme=state.theme==="dark"?"light":"dark";save();applyTheme()};
-$("#settingsThemeBtn").onclick=()=>{$("#themeBtn").click()};
-$("#profileBtn").onclick=()=>showPage("settings");
-$("#newQuote").onclick=()=>{state.quoteIndex++;save();renderQuote()};
-$("#editGoal").onclick=()=>openModal("goalModal");
-$("#settingsGoalBtn").onclick=()=>openModal("goalModal");
-$("#addClassBtn").onclick=()=>openModal("classModal");
-$("#addDocBtn").onclick=()=>openModal("docModal");
-$("#addDocQuick").onclick=()=>openModal("docModal");
-$("#blockerInfo").onclick=()=>toast("Native Android blocker will be added in the Android version.");
-$("#timerBtn").onclick=()=>timer.running?pauseTimer():startTimer();
-$("#resetTimer").onclick=resetTimer;
-
-$$("[data-close]").forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
-$$(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("open")}));
-
-$$(".goal-options button").forEach(b=>b.onclick=()=>{$("#customGoal").value=Number(b.dataset.hours)*60});
-$("#saveGoal").onclick=()=>{
-  const mins=Number($("#customGoal").value);
-  if(!mins||mins<15){toast("Choose at least 15 minutes.");return}
-  state.goal=Math.min(1440,mins);save();closeModal("goalModal");renderAll();toast("Daily goal updated");
-};
-
-const days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-$("#classDay").innerHTML=days.map((d,i)=>`<option value="${i}">${d}</option>`).join("");
-$("#saveClass").onclick=()=>{
-  const subject=$("#classSubject").value.trim(), time=$("#classTime").value, day=Number($("#classDay").value);
-  if(!subject||!time){toast("Add a subject and time.");return}
-  state.classes.push({id:Date.now().toString(),subject,time,day,meta:$("#classMeta").value.trim()});
-  save();closeModal("classModal");$("#classSubject").value="";$("#classTime").value="";$("#classMeta").value="";renderAll();toast("Class added");
-};
-
-let selectedFile=null;
-$("#pickFile").onclick=()=>$("#fileInput").click();
-$("#fileInput").onchange=e=>{selectedFile=e.target.files[0]||null;$("#chosenFile").textContent=selectedFile?`${selectedFile.name} · ${fmtBytes(selectedFile.size)}`:"No file selected";if(selectedFile&&!$("#docName").value)$("#docName").value=selectedFile.name.replace(/\.[^/.]+$/,"")};
-$("#saveDoc").onclick=async()=>{
-  if(!selectedFile){toast("Choose a file first.");return}
-  if(selectedFile.size>7*1024*1024){toast("For this prototype, keep files under 7 MB.");return}
-  try{
-    const data=await readFile(selectedFile);
-    state.docs.push({id:Date.now().toString(),name:$("#docName").value.trim()||selectedFile.name,fileName:selectedFile.name,category:$("#docCategory").value,size:selectedFile.size,type:selectedFile.type,data});
-    save();closeModal("docModal");selectedFile=null;$("#fileInput").value="";$("#chosenFile").textContent="No file selected";$("#docName").value="";renderAll();toast("Document saved on this device");
-  }catch{toast("Could not save that file.");}
-};
-$("#docSearch").oninput=e=>renderDocuments(e.target.value);
-
-$("#clearData").onclick=()=>{
-  if(confirm("Clear all SANKALP data from this browser? This cannot be undone.")){localStorage.removeItem(KEY);state={...defaultState};location.reload();}
-};
-
-applyTheme();renderAll();
+  function wire(){document.addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(b)navigate(b.dataset.page);});$('#addGoalHome').onclick=$('#addGoalBtn').onclick=$('#firstGoalBtn').onclick=()=>openGoalForm();$('#addEventBtn').onclick=()=>openEventForm();$('#prevMonth').onclick=()=>{calendarDate.setMonth(calendarDate.getMonth()-1);renderCalendar();};$('#nextMonth').onclick=()=>{calendarDate.setMonth(calendarDate.getMonth()+1);renderCalendar();};$('#editDailyGoal').onclick=()=>{navigate('settings');$('#dailyGoalInput').focus();};$('#themeToggle').onclick=()=>{state.settings.theme=state.settings.theme==='dark'?'light':'dark';save();applyTheme();};$('#profileBtn').onclick=()=>navigate('settings');$('#newQuote').onclick=()=>{const q=quotes[Math.floor(Math.random()*quotes.length)];$('#quote').textContent=`“${q}”`;};$('#timerStart').onclick=startTimer;$('#timerResume').onclick=startTimer;$('#timerPause').onclick=pauseTimer;$('#timerReset').onclick=resetTimer;$('#timerFinish').onclick=finishTimer;$('#checkinBtn').onclick=openCheckin;$('#appearance').onchange=e=>{state.settings.theme=e.target.value;save();applyTheme();};$('#dailyGoalInput').onchange=e=>{state.settings.dailyGoal=Math.max(15,Math.min(1440,Number(e.target.value)||120));save();renderAll();toast('Daily study goal updated.');};$('#reminderTime').onchange=e=>{state.settings.reminderTime=e.target.value;save();};$('#notificationBtn').onclick=toggleReminders;$('#exportBtn').onclick=exportData;$('#clearDataBtn').onclick=clearData;$('#fileInput').onchange=e=>{handleFile(e.target.files[0]);e.target.value='';};$('#fileSearch').oninput=renderFiles;$('#fileCategoryFilter').onchange=renderFiles;$('#importInput').onchange=e=>{if(e.target.files[0])importBackup(e.target.files[0]);e.target.value='';};$('#modal').addEventListener('click',e=>{if(e.target===$('#modal'))closeModal();});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#modal').open)closeModal();});window.matchMedia('(prefers-color-scheme: light)').addEventListener?.('change',()=>{if(state.settings.theme==='system')applyTheme();});}
+  wire();renderAll();setInterval(eventsReminder,30000);
+})();
