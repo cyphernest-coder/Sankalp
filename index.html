@@ -20,6 +20,250 @@
   <meta property="og:type" content="website">
   <title>Sankalp — Study. Focus. Achieve.</title>
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* =========================================================
+       SANKALP — MORE / INFORMATION SECTION
+    ========================================================== */
+
+    .sankalp-more-section {
+      margin-top: 34px;
+      padding: 34px 0 150px;
+    }
+
+    .sankalp-more-heading {
+      margin-bottom: 18px;
+    }
+
+    .sankalp-more-heading h2 {
+      margin: 4px 0 6px;
+    }
+
+    .sankalp-more-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .sankalp-more-card {
+      overflow: hidden;
+      border: 1px solid rgba(127, 127, 127, 0.18);
+      border-radius: 18px;
+      background: rgba(127, 127, 127, 0.055);
+      transition: border-color .2s ease, transform .2s ease;
+    }
+
+    .sankalp-more-card[open] {
+      border-color: rgba(34, 197, 94, 0.35);
+    }
+
+    .sankalp-more-card > summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 72px;
+      padding: 14px 17px;
+      box-sizing: border-box;
+    }
+
+    .sankalp-more-card > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .more-icon {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(34, 197, 94, 0.10);
+      color: #22c55e;
+      font-weight: 800;
+    }
+
+    .more-title {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .more-title strong {
+      font-size: 15px;
+    }
+
+    .more-title small {
+      color: rgba(127, 127, 127, 0.9);
+      font-size: 12px;
+    }
+
+    .more-chevron {
+      margin-left: auto;
+      color: #22c55e;
+      font-size: 22px;
+      line-height: 1;
+      transition: transform .2s ease;
+    }
+
+    .sankalp-more-card[open] > summary .more-chevron {
+      transform: rotate(45deg);
+    }
+
+    .more-content {
+      padding: 0 22px 24px 71px;
+      color: inherit;
+    }
+
+    .more-content p {
+      margin: 0 0 14px;
+      line-height: 1.75;
+      font-size: 14px;
+      opacity: .76;
+    }
+
+    .more-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    .more-content h4 {
+      margin: 22px 0 7px;
+      font-size: 14px;
+      color: inherit;
+    }
+
+    .more-note {
+      padding: 12px 14px;
+      border-left: 3px solid #22c55e;
+      border-radius: 8px;
+      background: rgba(34, 197, 94, 0.06);
+    }
+
+    /* FAQ inside FAQ */
+    .faq-content {
+      padding-right: 22px;
+    }
+
+    .faq-content > details {
+      border-top: 1px solid rgba(127, 127, 127, 0.15);
+      padding: 13px 0;
+    }
+
+    .faq-content > details:first-child {
+      border-top: 0;
+    }
+
+    .faq-content > details > summary {
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .faq-content > details > p {
+      padding: 8px 0 0;
+      margin: 0;
+    }
+
+    /* CONTACT */
+    .sankalp-contact-box {
+      margin-top: 18px;
+      padding: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border: 1px solid rgba(34, 197, 94, 0.28);
+      border-radius: 20px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(34, 197, 94, 0.12),
+          rgba(34, 197, 94, 0.035)
+        );
+    }
+
+    .sankalp-contact-box h3 {
+      margin: 4px 0 5px;
+      font-size: 22px;
+    }
+
+    .sankalp-contact-box p {
+      margin: 0;
+    }
+
+    .sankalp-contact-button {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 17px;
+      border-radius: 14px;
+      background: #22c55e;
+      color: #061006;
+      text-decoration: none;
+      font-size: 14px;
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.18);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .sankalp-contact-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.25);
+    }
+
+    .sankalp-contact-button .contact-arrow {
+      margin-left: 5px;
+      font-size: 18px;
+    }
+
+    .sankalp-more-footer {
+      text-align: center;
+      margin: 22px 0 0;
+      font-size: 12px;
+      opacity: .45;
+    }
+
+    @media (max-width: 700px) {
+      .sankalp-more-section {
+        padding-bottom: 170px;
+      }
+
+      .sankalp-more-card > summary {
+        min-height: 68px;
+        padding: 13px;
+        gap: 11px;
+      }
+
+      .more-icon {
+        width: 37px;
+        height: 37px;
+        flex-basis: 37px;
+      }
+
+      .more-content {
+        padding: 0 16px 20px 16px;
+      }
+
+      .more-content p {
+        font-size: 13px;
+        line-height: 1.7;
+      }
+
+      .sankalp-contact-box {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 20px;
+      }
+
+      .sankalp-contact-button {
+        width: 100%;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+    }
+  </style>
+
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -53,18 +297,431 @@
       <section class="page" id="page-schedule"><div class="page-intro"><div><p class="eyebrow green">MAKE SPACE FOR WHAT MATTERS</p><h2>Schedule</h2><p class="muted">Classes, study blocks, and upcoming commitments.</p></div><button class="button primary" id="addEventBtn">＋ Add to timetable</button></div><div class="card"><div class="card-top"><div><p class="eyebrow">WEEKLY PLAN</p><h3>Your timetable</h3></div></div><div id="scheduleList" class="schedule-list"></div><div id="scheduleEmpty" class="empty-state">Your week is open. Add a class or study block to get started.</div></div><div class="card calendar-card"><div class="card-top"><div><p class="eyebrow">PLAN AHEAD</p><h3 id="calendarMonth"></h3></div><div class="calendar-controls"><button class="icon-button" id="prevMonth" aria-label="Previous month">‹</button><button class="icon-button" id="nextMonth" aria-label="Next month">›</button></div></div><div class="calendar-grid" id="calendarGrid"></div><div class="calendar-legend"><span><i class="dot study"></i>Study</span><span><i class="dot deadline"></i>Deadline</span><span><i class="dot schedule"></i>Schedule</span></div></div></section>
       <section class="page" id="page-focus"><div class="focus-layout"><article class="card focus-card"><p class="eyebrow green">FOCUS MODE</p><h2>One thing at a time.</h2><p class="muted">Start a session, give it your attention, and let the minutes add up.</p><div class="timer" id="timerDisplay">00:00:00</div><div class="timer-state"><span class="live-dot" id="timerDot"></span><span id="timerStatus">Ready when you are</span></div><div class="focus-controls"><button class="button primary" id="timerStart">Start session</button><button class="button secondary hidden" id="timerPause">Pause</button><button class="button secondary hidden" id="timerResume">Resume</button><button class="button quiet hidden" id="timerReset">Reset</button><button class="button secondary hidden" id="timerFinish">Finish session</button></div><div class="focus-fields"><label>Subject<input id="sessionSubject" type="text" placeholder="e.g. Physics — Chapter 4"></label><label>Connect to a goal<select id="sessionGoal"><option value="">No goal selected</option></select></label><label class="full-field">Session note <span class="muted">(optional)</span><input id="sessionNote" type="text" placeholder="What are you working on?"></label></div></article><aside class="focus-side"><article class="card"><p class="eyebrow">TODAY'S FOCUS</p><h3 id="focusTodayTime">0m</h3><p class="muted">of <span id="focusDailyTarget">2h</span> daily goal</p><div class="progress-track"><span id="focusDailyBar"></span></div></article><article class="card"><p class="eyebrow">A GENTLE REMINDER</p><p class="reminder-copy">You don't have to do it all today. Just take the next step.</p></article><article class="card"><p class="eyebrow">RECENT SESSIONS</p><div id="recentSessions" class="mini-list"></div></article></aside></div></section>
       <section class="page" id="page-files"><div class="page-intro"><div><p class="eyebrow green">YOUR PRIVATE STUDY DESK</p><h2>Documents</h2><p class="muted">Your files are stored in this browser on this device.</p></div><label class="button primary upload-button">＋ Add document<input type="file" id="fileInput" hidden></label></div><div class="notice"><span>ⓘ</span><span><strong>Maximum file size: 100 MB</strong><br>Files stay on this device. Browser storage limits vary by device and browser.</span></div><div class="file-filters"><label class="search-box"><span>⌕</span><input id="fileSearch" type="search" placeholder="Search your documents" aria-label="Search documents"></label><select id="fileCategoryFilter" aria-label="Filter documents by category"><option value="">All categories</option><option>Notes</option><option>Question Papers</option><option>Books</option><option>Assignments</option><option>Other</option></select></div><div id="fileList" class="file-grid"></div><div id="filesEmpty" class="card empty-panel"><span class="empty-symbol">□</span><h3>Your study materials, all in one place</h3><p class="muted">Save notes, question papers, books, and assignments for easy access.</p></div></section>
-      <section class="page" id="page-progress"><div class="page-intro"><div><p class="eyebrow green">NOTICE THE DISTANCE YOU'VE COME</p><h2>Your progress</h2><p class="muted">Every session and every small step counts.</p></div></div><div class="metric-grid"><article class="card metric"><p class="eyebrow">STUDY TIME</p><strong id="totalStudyMetric">0h</strong><span class="muted">total focused time</span></article><article class="card metric"><p class="eyebrow">SESSIONS</p><strong id="sessionMetric">0</strong><span class="muted">completed sessions</span></article><article class="card metric"><p class="eyebrow">MILESTONES</p><strong id="milestoneMetric">0</strong><span class="muted">steps completed</span></article><article class="card metric"><p class="eyebrow">GOALS</p><strong id="completedGoalMetric">0</strong><span class="muted">goals completed</span></article></div><div class="grid two progress-layout"><article class="card"><div class="card-top"><div><p class="eyebrow">YOUR RHYTHM</p><h3>This week</h3></div><span class="muted" id="weekTotal"></span></div><div class="week-chart" id="weekChart"></div></article><article class="card streak-card"><p class="eyebrow">CONSISTENCY, YOUR WAY</p><div class="streak-number"><span>🔥</span><strong id="currentStreak">0</strong><small>day streak</small></div><p class="muted">Your longest streak: <strong id="longestStreak">0 days</strong></p><div class="streak-stats"><span><strong id="activeDays">0</strong><small>active days</small></span><span><strong id="totalCheckins">0</strong><small>check-ins</small></span></div><button class="button secondary" id="checkinBtn">Daily check-in</button></article></div><div class="grid two progress-layout"><article class="card"><div class="card-top"><div><p class="eyebrow">KEEP SHOWING UP</p><h3>Recent activity</h3></div></div><div id="activityList" class="activity-list"></div><div id="activityEmpty" class="empty-state">Your study history will show up here.</div></article><article class="card"><div class="card-top"><div><p class="eyebrow">MILESTONES WORTH CELEBRATING</p><h3>Achievements</h3></div></div><div id="achievementList" class="achievement-list"></div></article></div></section>
+      <section class="page" id="page-progress"><div class="page-intro"><div><p class="eyebrow green">NOTICE THE DISTANCE YOU'VE COME</p><h2>Your progress</h2><p class="muted">Every session and every small step counts.</p></div></div><div class="metric-grid"><article class="card metric"><p class="eyebrow">STUDY TIME</p><strong id="totalStudyMetric">0h</strong><span class="muted">total focused time</span></article><article class="card metric"><p class="eyebrow">SESSIONS</p><strong id="sessionMetric">0</strong><span class="muted">completed sessions</span></article><article class="card metric"><p class="eyebrow">MILESTONES</p><strong id="milestoneMetric">0</strong><span class="muted">steps completed</span></article><article class="card metric"><p class="eyebrow">GOALS</p><strong id="completedGoalMetric">0</strong><span class="muted">goals completed</span></article></div><div class="grid two progress-layout"><article class="card"><div class="card-top"><div><p class="eyebrow">YOUR RHYTHM</p><h3>This week</h3></div><span class="muted" id="weekTotal"></span></div><div class="week-chart" id="weekChart"></div></article><article class="card streak-card"><p class="eyebrow">CONSISTENCY, YOUR WAY</p><div class="streak-number"><span>🔥</span><strong id="currentStreak">0</strong><small>day streak</small></div><p class="muted">Your longest streak: <strong id="longestStreak">0 days</strong></p><div class="streak-stats"><span><strong id="activeDays">0</strong><small>active days</small></span><span><strong id="totalCheckins">0</strong><small>check-ins</small></span></div><button class="button secondary" id="checkinBtn">Daily check-in</button></article></div><div class="grid two progress-layout"><article class="card"><div class="card-top"><div><p class="eyebrow">KEEP SHOWING UP</p><h3>Recent activity</h3></div></div><div id="activityList" class="activity-list"></div><div id="activityEmpty" class="empty-state">Your study history will show up here.</div></article><article class="card"><div class="card-top"><div><p class="eyebrow">MILESTONES WORTH CELEBRATING</p><h3>Achievements</h3></div></div><div id="achievementList" class="achievement-list"></div></article></div>
+      <!-- =====================================================
+           SANKALP MORE / INFORMATION SECTION
+           Kept inside the Progress page so the existing
+           page-navigation system is not disturbed.
+      ====================================================== -->
+      <section class="sankalp-more-section" id="sankalp-more">
+
+        <div class="sankalp-more-heading">
+          <div>
+            <p class="eyebrow green">MORE FROM SANKALP</p>
+            <h2>Good to know.</h2>
+            <p class="muted">About Sankalp, your privacy, your data, and how to reach us.</p>
+          </div>
+        </div>
+
+        <div class="sankalp-more-grid">
+
+          <!-- ABOUT -->
+          <details class="sankalp-more-card" open>
+            <summary>
+              <span class="more-icon">✦</span>
+              <span class="more-title">
+                <strong>About Us</strong>
+                <small>What Sankalp is and why it exists</small>
+              </span>
+              <span class="more-chevron">+</span>
+            </summary>
+
+            <div class="more-content">
+              <p>
+                Sankalp is a student-focused study and productivity platform
+                designed to make everyday academic planning simpler. It brings
+                goals, milestones, schedules, focused study sessions, progress
+                tracking, and study documents into one organized space.
+              </p>
+
+              <p>
+                The idea behind Sankalp is simple: students should be able to
+                concentrate on their work instead of spending unnecessary time
+                managing different tools. Sankalp helps turn a larger academic
+                goal into smaller steps that can be planned, worked on, and
+                reviewed over time.
+              </p>
+
+              <p>
+                Sankalp is designed with a local-first approach. Core
+                information such as goals, sessions, settings, check-ins, and
+                supported documents can be kept in the browser on the device
+                where you use Sankalp. This approach is intended to give
+                students more control over their study information and reduce
+                the need to send personal study data to a remote service.
+              </p>
+
+              <p>
+                Sankalp is an independent student project. Features may
+                continue to change as the project grows, and feedback from
+                students can help shape future improvements.
+              </p>
+            </div>
+          </details>
+
+
+          <!-- PRIVACY -->
+          <details class="sankalp-more-card">
+            <summary>
+              <span class="more-icon">⌾</span>
+              <span class="more-title">
+                <strong>Privacy Policy</strong>
+                <small>How Sankalp handles your information</small>
+              </span>
+              <span class="more-chevron">+</span>
+            </summary>
+
+            <div class="more-content">
+              <p>
+                Your privacy matters to Sankalp. This Privacy Policy explains
+                the general way information is handled when you use the Sankalp
+                website and its study-management features.
+              </p>
+
+              <h4>Information you create</h4>
+              <p>
+                Sankalp may store information that you intentionally enter or
+                create while using the application. This can include goals,
+                milestones, timetable entries, study-session records,
+                check-ins, progress information, application preferences, and
+                documents that you choose to add.
+              </p>
+
+              <h4>Local storage</h4>
+              <p>
+                Sankalp's core local features are designed to store supported
+                information in browser storage on your device. This means that
+                the information can remain available when you return to the
+                same website using the same browser and device.
+              </p>
+
+              <p>
+                Local storage also has an important limitation: it is controlled
+                by your browser and device. Clearing website data, clearing
+                browser storage, using private browsing, changing browsers,
+                resetting a device, browser storage limits, or other technical
+                changes can make locally stored information unavailable.
+              </p>
+
+              <h4>Documents and study files</h4>
+              <p>
+                Documents added through Sankalp's document feature are intended
+                to remain in browser storage on your device rather than being
+                uploaded to a Sankalp server as part of normal local document
+                storage. Because browser storage is not a permanent backup
+                service, important files should also be kept in a separate
+                backup location.
+              </p>
+
+              <h4>Accounts and passwords</h4>
+              <p>
+                Sankalp's core features do not require a traditional Sankalp
+                account or Sankalp password. You should never enter passwords,
+                banking information, government identification numbers, or
+                other highly sensitive information into fields that do not
+                require it.
+              </p>
+
+              <h4>Analytics and third-party services</h4>
+              <p>
+                Sankalp's local productivity features are designed so that
+                study information does not need to be sent to a Sankalp server
+                simply to calculate progress, manage goals, or display locally
+                stored information. The website may nevertheless use hosting,
+                browser, analytics, or other third-party technologies depending
+                on the version of the site. Those services can have their own
+                privacy policies and data practices.
+              </p>
+
+              <h4>Email communication</h4>
+              <p>
+                If you use Contact Us, Sankalp opens your email application
+                using a mail link. The message is then handled by your chosen
+                email provider. Any information you decide to include in the
+                email is information you voluntarily send.
+              </p>
+
+              <h4>Changes to this policy</h4>
+              <p>
+                Sankalp may update this policy when features, technology, or
+                data practices change. The version displayed on the current
+                Sankalp website should be treated as the latest version.
+              </p>
+            </div>
+          </details>
+
+
+          <!-- TERMS -->
+          <details class="sankalp-more-card">
+            <summary>
+              <span class="more-icon">✓</span>
+              <span class="more-title">
+                <strong>Terms &amp; Conditions</strong>
+                <small>Rules for using Sankalp</small>
+              </span>
+              <span class="more-chevron">+</span>
+            </summary>
+
+            <div class="more-content">
+              <p>
+                By using Sankalp, you agree to use the application responsibly
+                and in accordance with these Terms &amp; Conditions. If you do
+                not agree with these terms, please stop using Sankalp.
+              </p>
+
+              <h4>1. Purpose of the service</h4>
+              <p>
+                Sankalp is a study-management and productivity tool. It may
+                provide features for goals, milestones, schedules, focused
+                study sessions, progress tracking, document organization,
+                reminders, and related student productivity activities.
+              </p>
+
+              <h4>2. Educational support</h4>
+              <p>
+                Sankalp is intended to help with organization and productivity.
+                It is not a replacement for teachers, schools, textbooks,
+                official academic instructions, professional advice, or any
+                other authority responsible for your education.
+              </p>
+
+              <h4>3. Your responsibility</h4>
+              <p>
+                You are responsible for information and documents that you
+                enter into Sankalp. You should check important information for
+                accuracy and maintain backups of important files and data.
+              </p>
+
+              <h4>4. Documents and copyright</h4>
+              <p>
+                You are responsible for ensuring that you have the right to
+                store, access, or use documents that you add to Sankalp. Do not
+                use Sankalp to distribute copyrighted material or other content
+                when you do not have the necessary rights or permission.
+              </p>
+
+              <h4>5. Availability and changes</h4>
+              <p>
+                Sankalp is an actively developing project. Features may be
+                improved, changed, temporarily unavailable, removed, or
+                replaced. The appearance and behavior of the application may
+                therefore change over time.
+              </p>
+
+              <h4>6. Local data and backups</h4>
+              <p>
+                Some Sankalp information is stored locally by your browser.
+                Data can be lost because of clearing browser data, browser
+                storage limits, device failure, browser changes, private
+                browsing, operating-system changes, or other technical events.
+                Sankalp should not be treated as your only backup for important
+                academic material.
+              </p>
+
+              <h4>7. Responsible use</h4>
+              <p>
+                You must not intentionally interfere with the operation of
+                Sankalp, attempt unauthorized access, distribute malicious
+                content through the service, abuse application functionality,
+                or use Sankalp for unlawful activity.
+              </p>
+
+              <h4>8. No guarantee</h4>
+              <p>
+                Sankalp is provided as a productivity tool and is developed
+                with the goal of being useful and reliable. However, complete
+                availability, uninterrupted operation, compatibility with
+                every device, or complete freedom from errors cannot be
+                guaranteed.
+              </p>
+
+              <h4>9. Changes to these terms</h4>
+              <p>
+                These Terms &amp; Conditions may be updated as Sankalp
+                develops. The latest version displayed on the Sankalp website
+                should be treated as the current version.
+              </p>
+
+              <p class="more-note">
+                These terms are general website terms and are not a substitute
+                for legal advice.
+              </p>
+            </div>
+          </details>
+
+
+          <!-- FAQ -->
+          <details class="sankalp-more-card">
+            <summary>
+              <span class="more-icon">?</span>
+              <span class="more-title">
+                <strong>FAQs</strong>
+                <small>Answers to common questions</small>
+              </span>
+              <span class="more-chevron">+</span>
+            </summary>
+
+            <div class="more-content faq-content">
+
+              <details>
+                <summary>Is Sankalp free?</summary>
+                <p>
+                  Sankalp is designed as a free student productivity project.
+                  Features and availability may change as the project develops.
+                </p>
+              </details>
+
+              <details>
+                <summary>Do I need a Sankalp account?</summary>
+                <p>
+                  The core local productivity features do not require a
+                  traditional Sankalp account. Supported information can be
+                  stored locally by your browser.
+                </p>
+              </details>
+
+              <details>
+                <summary>Where are my documents stored?</summary>
+                <p>
+                  Documents added through the document feature are intended to
+                  be stored in browser storage on your device. Browser storage
+                  limits vary by device and browser.
+                </p>
+              </details>
+
+              <details>
+                <summary>Can I use Sankalp on my phone?</summary>
+                <p>
+                  Sankalp is designed to work with supported modern browsers,
+                  including mobile browsers. The exact experience can vary
+                  depending on your device and browser.
+                </p>
+              </details>
+
+              <details>
+                <summary>What happens if I clear browser data?</summary>
+                <p>
+                  Locally stored Sankalp information may be removed when site
+                  or browser data is cleared. Export important information
+                  before performing an action that may remove browser storage.
+                </p>
+              </details>
+
+              <details>
+                <summary>Can I suggest a feature?</summary>
+                <p>
+                  Yes. Use Contact Us below and send your idea, feedback,
+                  bug report, or feature request.
+                </p>
+              </details>
+
+            </div>
+          </details>
+
+
+          <!-- DATA -->
+          <details class="sankalp-more-card">
+            <summary>
+              <span class="more-icon">▣</span>
+              <span class="more-title">
+                <strong>Data &amp; Storage</strong>
+                <small>Understand your local data</small>
+              </span>
+              <span class="more-chevron">+</span>
+            </summary>
+
+            <div class="more-content">
+              <p>
+                Sankalp uses a local-first approach for its core study
+                features. Goals, study sessions, settings, check-ins, and
+                supported documents can be stored by the browser on your
+                device.
+              </p>
+
+              <p>
+                You can use the Export JSON option in Settings to create a
+                backup of supported application data. Keep important backups
+                somewhere safe, especially before clearing browser data,
+                changing browsers, or moving to another device.
+              </p>
+
+              <p>
+                Local storage is normally specific to the browser and device
+                where it was created. Your Sankalp information should therefore
+                not be assumed to automatically synchronize between your phone,
+                laptop, and other devices.
+              </p>
+            </div>
+          </details>
+
+
+          <!-- DISCLAIMER -->
+          <details class="sankalp-more-card">
+            <summary>
+              <span class="more-icon">!</span>
+              <span class="more-title">
+                <strong>Disclaimer</strong>
+                <small>Important information about Sankalp</small>
+              </span>
+              <span class="more-chevron">+</span>
+            </summary>
+
+            <div class="more-content">
+              <p>
+                Sankalp is provided as a student productivity project. It is
+                intended to help users organize study activities and does not
+                guarantee academic results, examination performance, or any
+                particular educational outcome.
+              </p>
+
+              <p>
+                Users should independently verify important academic dates,
+                instructions, documents, deadlines, and other information.
+                Sankalp should be used as a supporting tool rather than as the
+                sole source of important academic information.
+              </p>
+            </div>
+          </details>
+
+        </div>
+
+
+        <!-- CONTACT -->
+        <div class="sankalp-contact-box">
+
+          <div>
+            <p class="eyebrow green">HAVE AN IDEA?</p>
+            <h3>Talk to Sankalp.</h3>
+            <p class="muted">
+              Send feedback, report a problem, or suggest a feature.
+            </p>
+          </div>
+
+          <a
+            class="sankalp-contact-button"
+            href="mailto:dhruvjoshi071@gmail.com?subject=Sankalp%20-%20Feedback%20or%20Suggestion"
+          >
+            <span>✉</span>
+            <strong>Contact Us</strong>
+            <span class="contact-arrow">→</span>
+          </a>
+
+        </div>
+
+        <p class="sankalp-more-footer">
+          Sankalp · Study. Focus. Achieve.
+        </p>
+
+      </section>
+
+</section>
       <section class="page" id="page-settings"><div class="page-intro"><div><p class="eyebrow green">YOUR SPACE, YOUR PACE</p><h2>Settings</h2><p class="muted">A few choices to make Sankalp feel like yours.</p></div></div><div class="settings-stack"><article class="card setting-row"><div><h3>Appearance</h3><p class="muted">Choose how Sankalp looks on this device.</p></div><select id="appearance"><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select></article><article class="card setting-row"><div><h3>Daily study goal</h3><p class="muted">A gentle target for your focused time.</p></div><label class="inline-input"><input id="dailyGoalInput" type="number" min="15" max="1440" step="15"><span>minutes</span></label></article><article class="card setting-row"><div><h3>Daily study reminder</h3><p class="muted" id="notificationHelp">A browser notification can remind you to make time for a study session.</p></div><div class="notify-controls"><input id="reminderTime" type="time" value="18:00" aria-label="Reminder time"><button class="button secondary" id="notificationBtn">Enable reminders</button></div></article><article class="card setting-row"><div><h3>Your data</h3><p class="muted">Your Sankalp data stays on this device unless you export it.</p></div><div class="setting-actions"><button class="button secondary" id="exportBtn">Export JSON</button><label class="button secondary import-button">Import backup<input type="file" id="importInput" accept="application/json,.json" hidden></label></div></article><article class="card setting-row danger-row"><div><h3>Clear local data</h3><p class="muted">Remove your Sankalp goals, sessions, schedule, and settings from this device.</p></div><button class="button danger" id="clearDataBtn">Clear data</button></article></div></section>
-      ot" id="timerDot"></span><span id="timerStatus">Ready when you are</span></div><div class="focus-controls"><button class="button primary" id="timerStart">Start session</button><button class="button secondary hidden" id="timerPause">Pause</button><button class="button secondary hidden" id="timerResume">Resume</button><button class="button quiet hidden" id="timerReset">Reset</button><button class="button secondary hidden" id="timerFinish">Finish session</button></div><div class="focus-fields"><label>Subject<input id="sessionSubject" type="text" placeholder="e.g. Physics — Chapter 4"></label><label>Connect to a goal<select id="sessionGoal"><option value="">No goal selected</option></select></label><label class="full-field">Session note <span class="muted">(optional)</span><input id="sessionNote" type="text" placeholder="What are you working on?"></label></div></article><aside class="focus-side"><article class="card"><p class="eyebrow">TODAY'S FOCUS</p><h3 id="focusTodayTime">0m</h3><p class="muted">of <span id="focusDailyTarget">2h</span> daily goal</p><div class="progress-track"><span id="focusDailyBar"></span></div></article><article class="card"><p class="eyebrow">A GENTLE REMINDER</p><p class="reminder-copy">You don't have to do it all today. Just take the next step.</p></article><article class="card"><p class="eyebrow">RECENT SESSIONS</p><div id="recentSessions" class="mini-list"></div></article></aside></div></section>
-      <section class="page" id="page-files"><div class="page-intro"><div><p class="eyebrow green">YOUR PRIVATE STUDY DESK</p><h2>Documents</h2><p class="muted">Your files are stored in this browser on this device.</p></div><label class="button primary upload-button">＋ Add document<input type="file" id="fileInput" hidden></label></div><div class="notice"><span>ⓘ</span><span><strong>Maximum file size: 100 MB</strong><br>Files stay on this device. Browser storage limits vary by device and browser.</span></div><div class="file-filters"><label class="search-box"><span>⌕</span><input id="fileSearch" type="search" placeholder="Search your documents" aria-label="Search documents"></label><select id="fileCategoryFilter" aria-label="Filter documents by category"><option value="">All categories</option><option>Notes</option><option>Question Papers</option><option>Books</option><option>Assignments</option><option>Other</option></select></div><div id="fileList" class="file-grid"></div><div id="filesEmpty" class="card empty-panel"><span class="empty-symbol">□</span><h3>Your study materials, all in one place</h3><p class="muted">Save notes, question papers, books, and assignments for easy access.</p></div></section>
-      <section class="page" id="page-progress"><div class="page-intro"><div><p class="eyebrow green">NOTICE THE DISTANCE YOU'VE COME</p><h2>Your progress</h2><p class="muted">Every session and every small step counts.</p></div></div><div class="metric-grid"><article class="card metric"><p class="eyebrow">STUDY TIME</p><strong id="totalStudyMetric">0h</strong><span class="muted">total focused time</span></article><article class="card metric"><p class="eyebrow">SESSIONS</p><strong id="sessionMetric">0</strong><span class="muted">completed sessions</span></article><article class="card metric"><p class="eyebrow">MILESTONES</p><strong id="milestoneMetric">0</strong><span class="muted">steps completed</span></article><article class="card metric"><p class="eyebrow">GOALS</p><strong id="completedGoalMetric">0</strong><span class="muted">goals completed</span></article></div><div class="grid two progress-layout"><article class="card"><div class="card-top"><div><p class="eyebrow">YOUR RHYTHM</p><h3>This week</h3></div><span class="muted" id="weekTotal"></span></div><div class="week-chart" id="weekChart"></div></article><article class="card streak-card"><p class="eyebrow">CONSISTENCY, YOUR WAY</p><div class="streak-number"><span>🔥</span><strong id="currentStreak">0</strong><small>day streak</small></div><p class="muted">Your longest streak: <strong id="longestStreak">0 days</strong></p><div class="streak-stats"><span><strong id="activeDays">0</strong><small>active days</small></span><span><strong id="totalCheckins">0</strong><small>check-ins</small></span></div><button class="button secondary" id="checkinBtn">Daily check-in</button></article></div><div class="grid two progress-layout"><article class="card"><div class="card-top"><div><p class="eyebrow">KEEP SHOWING UP</p><h3>Recent activity</h3></div></div><div id="activityList" class="activity-list"></div><div id="activityEmpty" class="empty-state">Your study history will show up here.</div></article><article class="card"><div class="card-top"><div><p class="eyebrow">MILESTONES WORTH CELEBRATING</p><h3>Achievements</h3></div></div><div id="achievementList" class="achievement-list"></div></article></div></section>
-      <section class="page" id="page-settings"><div class="page-intro"><div><p class="eyebrow green">YOUR SPACE, YOUR PACE</p><h2>Settings</h2><p class="muted">A few choices to make Sankalp feel like yours.</p></div></div><div class="settings-stack"><article class="card setting-row"><div><h3>Appearance</h3><p class="muted">Choose how Sankalp looks on this device.</p></div><select id="appearance"><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select></article><article class="card setting-row"><div><h3>Daily study goal</h3><p class="muted">A gentle target for your focused time.</p></div><label class="inline-input"><input id="dailyGoalInput" type="number" min="15" max="1440" step="15"><span>minutes</span></label></article><article class="card setting-row"><div><h3>Daily study reminder</h3><p class="muted" id="notificationHelp">A browser notification can remind you to make time for a study session.</p></div><div class="notify-controls"><input id="reminderTime" type="time" value="18:00" aria-label="Reminder time"><button class="button secondary" id="notificationBtn">Enable reminders</button></div></article><article class="card setting-row"><div><h3>Your data</h3><p class="muted">Your Sankalp data stays on this device unless you export it.</p></div><div class="setting-actions"><button class="button secondary" id="exportBtn">Export JSON</button><label class="button secondary import-button">Import backup<input type="file" id="importInput" accept="application/json,.json" hidden></label></div></article><article class="card setting-row danger-row"><div><h3>Clear local data</h3><p class="muted">Remove your Sankalp goals, sessions, schedule, and settings from this device.</p></div><button class="button danger" id="clearDataBtn">Clear data</button></article></div></section>
-      
       <footer class="site-footer"><span>Study. Focus. Achieve.</span><span>Your Sankalp data stays on this device unless you export it.</span></footer>
     </main>
   </div>
   <nav class="mobile-nav" aria-label="Mobile navigation"><button class="nav-item active" data-page="home"><span>⌂</span>Home</button><button class="nav-item" data-page="goals"><span>◎</span>Goals</button><button class="nav-item" data-page="schedule"><span>▦</span>Schedule</button><button class="nav-item" data-page="focus"><span>◷</span>Focus</button><button class="nav-item" data-page="progress"><span>↗</span>Progress</button></nav>
   <dialog id="modal" class="modal"><form method="dialog" id="modalForm"><div class="modal-head"><div><p class="eyebrow green" id="modalEyebrow">A NEW STEP</p><h2 id="modalTitle">Add a goal</h2></div><button class="icon-button" value="cancel" aria-label="Close dialog">×</button></div><div id="modalBody" class="modal-body"></div><div class="modal-actions" id="modalActions"></div></form></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 </body>
 </html>
