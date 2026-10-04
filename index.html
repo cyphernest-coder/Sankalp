@@ -61,5 +61,169 @@
   <nav class="mobile-nav" aria-label="Mobile navigation"><button class="nav-item active" data-page="home"><span>⌂</span>Home</button><button class="nav-item" data-page="goals"><span>◎</span>Goals</button><button class="nav-item" data-page="schedule"><span>▦</span>Schedule</button><button class="nav-item" data-page="focus"><span>◷</span>Focus</button><button class="nav-item" data-page="progress"><span>↗</span>Progress</button></nav>
   <dialog id="modal" class="modal"><form method="dialog" id="modalForm"><div class="modal-head"><div><p class="eyebrow green" id="modalEyebrow">A NEW STEP</p><h2 id="modalTitle">Add a goal</h2></div><button class="icon-button" value="cancel" aria-label="Close dialog">×</button></div><div id="modalBody" class="modal-body"></div><div class="modal-actions" id="modalActions"></div></form></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  ```html
+<!-- SUGGESTIONS SECTION -->
+<section id="suggestions" class="suggestions-section">
+  <div class="suggestions-card">
+    <div class="suggestions-icon">💡</div>
+
+    <h2>Have a Suggestion?</h2>
+    <p>
+      Help us improve Sankalp. Tell us what feature, improvement, or idea
+      you would like to see.
+    </p>
+
+    <form id="suggestionForm">
+      <input
+        type="text"
+        id="suggestionName"
+        placeholder="Your name (optional)"
+      />
+
+      <input
+        type="email"
+        id="suggestionEmail"
+        placeholder="Your email (optional)"
+      />
+
+      <textarea
+        id="suggestionText"
+        placeholder="Write your suggestion..."
+        rows="5"
+        required
+      ></textarea>
+
+      <button type="submit">
+        Send Suggestion 🚀
+      </button>
+    </form>
+
+    <p class="suggestion-note">
+      Your suggestion will open in your email app before sending.
+    </p>
+  </div>
+</section>
+
+<style>
+.suggestions-section {
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.suggestions-card {
+  width: 100%;
+  max-width: 650px;
+  padding: 35px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.suggestions-icon {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.suggestions-card h2 {
+  margin: 0 0 10px;
+  font-size: 30px;
+}
+
+.suggestions-card p {
+  opacity: 0.75;
+  line-height: 1.6;
+}
+
+#suggestionForm {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#suggestionForm input,
+#suggestionForm textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 17px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.15);
+  color: inherit;
+  font-size: 15px;
+  outline: none;
+  resize: vertical;
+}
+
+#suggestionForm input:focus,
+#suggestionForm textarea:focus {
+  border-color: #4f8cff;
+}
+
+#suggestionForm button {
+  padding: 15px 20px;
+  border: none;
+  border-radius: 16px;
+  background: #2563eb;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+#suggestionForm button:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.suggestion-note {
+  font-size: 13px;
+  margin-top: 18px;
+}
+
+@media (max-width: 600px) {
+  .suggestions-card {
+    padding: 25px 20px;
+  }
+
+  .suggestions-card h2 {
+    font-size: 25px;
+  }
+}
+</style>
+
+<script>
+document.getElementById("suggestionForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const name = document.getElementById("suggestionName").value.trim();
+  const email = document.getElementById("suggestionEmail").value.trim();
+  const suggestion = document.getElementById("suggestionText").value.trim();
+
+  const receiver = "professionalworkfor249@gmail.com";
+
+  const subject = encodeURIComponent("Sankalp Website Suggestion");
+
+  const body = encodeURIComponent(
+`Sankalp Suggestion
+
+Name: ${name || "Not provided"}
+Email: ${email || "Not provided"}
+
+Suggestion:
+${suggestion}
+`
+  );
+
+  window.location.href = `mailto:${receiver}?subject=${subject}&body=${body}`;
+});
+</script>
+```
+
 </body>
 </html>
