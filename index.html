@@ -62,167 +62,96 @@
   <dialog id="modal" class="modal"><form method="dialog" id="modalForm"><div class="modal-head"><div><p class="eyebrow green" id="modalEyebrow">A NEW STEP</p><h2 id="modalTitle">Add a goal</h2></div><button class="icon-button" value="cancel" aria-label="Close dialog">×</button></div><div id="modalBody" class="modal-body"></div><div class="modal-actions" id="modalActions"></div></form></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   ```html
-<!-- SUGGESTIONS SECTION -->
-<section id="suggestions" class="suggestions-section">
-  <div class="suggestions-card">
-    <div class="suggestions-icon">💡</div>
+<a href="mailto:dhruvjoshi071@gmail.com?subject=Sankalp%20-%20Contact%20Us"
+   class="sankalp-contact-btn">
 
-    <h2>Have a Suggestion?</h2>
-    <p>
-      Help us improve Sankalp. Tell us what feature, improvement, or idea
-      you would like to see.
-    </p>
+  <span class="contact-icon">✉</span>
 
-    <form id="suggestionForm">
-      <input
-        type="text"
-        id="suggestionName"
-        placeholder="Your name (optional)"
-      />
+  <span class="contact-text">
+    <strong>Contact Us</strong>
+    <small>Have an idea or suggestion?</small>
+  </span>
 
-      <input
-        type="email"
-        id="suggestionEmail"
-        placeholder="Your email (optional)"
-      />
-
-      <textarea
-        id="suggestionText"
-        placeholder="Write your suggestion..."
-        rows="5"
-        required
-      ></textarea>
-
-      <button type="submit">
-        Send Suggestion 🚀
-      </button>
-    </form>
-
-    <p class="suggestion-note">
-      Your suggestion will open in your email app before sending.
-    </p>
-  </div>
-</section>
+  <span class="contact-arrow">→</span>
+</a>
 
 <style>
-.suggestions-section {
-  padding: 60px 20px;
-  display: flex;
-  justify-content: center;
-}
+.sankalp-contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 18px;
+  text-decoration: none;
+  color: inherit;
 
-.suggestions-card {
-  width: 100%;
-  max-width: 650px;
-  padding: 35px;
-  border-radius: 28px;
   background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 18px;
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
 }
 
-.suggestions-icon {
-  font-size: 42px;
-  margin-bottom: 10px;
+.sankalp-contact-btn:hover {
+  transform: translateY(-3px);
+  border-color: rgba(37, 99, 235, 0.5);
+  background: rgba(37, 99, 235, 0.08);
+  box-shadow: 0 12px 35px rgba(37, 99, 235, 0.15);
 }
 
-.suggestions-card h2 {
-  margin: 0 0 10px;
-  font-size: 30px;
+.contact-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: linear-gradient(135deg, #2563eb, #4f8cff);
+  color: white;
+
+  font-size: 19px;
+
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.3);
 }
 
-.suggestions-card p {
-  opacity: 0.75;
-  line-height: 1.6;
-}
-
-#suggestionForm {
-  margin-top: 25px;
+.contact-text {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  align-items: flex-start;
+  gap: 3px;
 }
 
-#suggestionForm input,
-#suggestionForm textarea {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 15px 17px;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(0, 0, 0, 0.15);
-  color: inherit;
+.contact-text strong {
   font-size: 15px;
-  outline: none;
-  resize: vertical;
 }
 
-#suggestionForm input:focus,
-#suggestionForm textarea:focus {
-  border-color: #4f8cff;
+.contact-text small {
+  font-size: 12px;
+  opacity: 0.6;
 }
 
-#suggestionForm button {
-  padding: 15px 20px;
-  border: none;
-  border-radius: 16px;
-  background: #2563eb;
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s ease;
+.contact-arrow {
+  margin-left: 8px;
+  font-size: 20px;
+  opacity: 0.6;
+  transition: transform 0.25s ease;
 }
 
-#suggestionForm button:hover {
-  transform: translateY(-2px);
-  opacity: 0.9;
-}
-
-.suggestion-note {
-  font-size: 13px;
-  margin-top: 18px;
-}
-
-@media (max-width: 600px) {
-  .suggestions-card {
-    padding: 25px 20px;
-  }
-
-  .suggestions-card h2 {
-    font-size: 25px;
-  }
+.sankalp-contact-btn:hover .contact-arrow {
+  transform: translateX(4px);
 }
 </style>
-
-<script>
-document.getElementById("suggestionForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  const name = document.getElementById("suggestionName").value.trim();
-  const email = document.getElementById("suggestionEmail").value.trim();
-  const suggestion = document.getElementById("suggestionText").value.trim();
-
-  const receiver = "professionalworkfor249@gmail.com";
-
-  const subject = encodeURIComponent("Sankalp Website Suggestion");
-
-  const body = encodeURIComponent(
-`Sankalp Suggestion
-
-Name: ${name || "Not provided"}
-Email: ${email || "Not provided"}
-
-Suggestion:
-${suggestion}
-`
-  );
-
-  window.location.href = `mailto:${receiver}?subject=${subject}&body=${body}`;
-});
-</script>
 ```
 
 </body>
