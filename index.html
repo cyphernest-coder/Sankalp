@@ -277,6 +277,7 @@
         <button class="nav-item" data-page="focus"><span>◷</span>Focus</button>
         <button class="nav-item" data-page="files"><span>□</span>Files</button>
         <button class="nav-item" data-page="progress"><span>↗</span>Progress</button>
+        <button class="nav-item" data-page="about"><span>ⓘ</span>About Us</button>
       </nav>
       <div class="sidebar-bottom"><div class="privacy-note"><span class="privacy-dot"></span><span>Your data stays on this device.</span></div><button class="nav-item" data-page="settings"><span>⚙</span>Settings</button><button class="theme-toggle" id="themeToggle" aria-label="Toggle color theme">☾ <span>Appearance</span></button></div>
     </aside>
@@ -303,13 +304,17 @@
            Kept inside the Progress page so the existing
            page-navigation system is not disturbed.
       ====================================================== -->
-      <section class="sankalp-more-section" id="sankalp-more">
+      
+
+</section>
+<section class="page" id="page-about">
+        <section class="sankalp-more-section" id="sankalp-more">
 
         <div class="sankalp-more-heading">
           <div>
-            <p class="eyebrow green">MORE FROM SANKALP</p>
-            <h2>Good to know.</h2>
-            <p class="muted">About Sankalp, your privacy, your data, and how to reach us.</p>
+            <p class="eyebrow green">ABOUT SANKALP</p>
+            <h2>About Us</h2>
+            <p class="muted">Learn about Sankalp, your privacy, your data, and how to reach us.</p>
           </div>
         </div>
 
@@ -713,9 +718,8 @@
         </p>
 
       </section>
-
-</section>
-      <section class="page" id="page-settings"><div class="page-intro"><div><p class="eyebrow green">YOUR SPACE, YOUR PACE</p><h2>Settings</h2><p class="muted">A few choices to make Sankalp feel like yours.</p></div></div><div class="settings-stack"><article class="card setting-row"><div><h3>Appearance</h3><p class="muted">Choose how Sankalp looks on this device.</p></div><select id="appearance"><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select></article><article class="card setting-row"><div><h3>Daily study goal</h3><p class="muted">A gentle target for your focused time.</p></div><label class="inline-input"><input id="dailyGoalInput" type="number" min="15" max="1440" step="15"><span>minutes</span></label></article><article class="card setting-row"><div><h3>Daily study reminder</h3><p class="muted" id="notificationHelp">A browser notification can remind you to make time for a study session.</p></div><div class="notify-controls"><input id="reminderTime" type="time" value="18:00" aria-label="Reminder time"><button class="button secondary" id="notificationBtn">Enable reminders</button></div></article><article class="card setting-row"><div><h3>Your data</h3><p class="muted">Your Sankalp data stays on this device unless you export it.</p></div><div class="setting-actions"><button class="button secondary" id="exportBtn">Export JSON</button><label class="button secondary import-button">Import backup<input type="file" id="importInput" accept="application/json,.json" hidden></label></div></article><article class="card setting-row danger-row"><div><h3>Clear local data</h3><p class="muted">Remove your Sankalp goals, sessions, schedule, and settings from this device.</p></div><button class="button danger" id="clearDataBtn">Clear data</button></article></div></section>
+      </section>
+            <section class="page" id="page-settings"><div class="page-intro"><div><p class="eyebrow green">YOUR SPACE, YOUR PACE</p><h2>Settings</h2><p class="muted">A few choices to make Sankalp feel like yours.</p></div></div><div class="settings-stack"><article class="card setting-row"><div><h3>Appearance</h3><p class="muted">Choose how Sankalp looks on this device.</p></div><select id="appearance"><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select></article><article class="card setting-row"><div><h3>Daily study goal</h3><p class="muted">A gentle target for your focused time.</p></div><label class="inline-input"><input id="dailyGoalInput" type="number" min="15" max="1440" step="15"><span>minutes</span></label></article><article class="card setting-row"><div><h3>Daily study reminder</h3><p class="muted" id="notificationHelp">A browser notification can remind you to make time for a study session.</p></div><div class="notify-controls"><input id="reminderTime" type="time" value="18:00" aria-label="Reminder time"><button class="button secondary" id="notificationBtn">Enable reminders</button></div></article><article class="card setting-row"><div><h3>Your data</h3><p class="muted">Your Sankalp data stays on this device unless you export it.</p></div><div class="setting-actions"><button class="button secondary" id="exportBtn">Export JSON</button><label class="button secondary import-button">Import backup<input type="file" id="importInput" accept="application/json,.json" hidden></label></div></article><article class="card setting-row danger-row"><div><h3>Clear local data</h3><p class="muted">Remove your Sankalp goals, sessions, schedule, and settings from this device.</p></div><button class="button danger" id="clearDataBtn">Clear data</button></article></div></section>
       <footer class="site-footer"><span>Study. Focus. Achieve.</span><span>Your Sankalp data stays on this device unless you export it.</span></footer>
     </main>
   </div>
