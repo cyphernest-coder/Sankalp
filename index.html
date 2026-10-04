@@ -61,95 +61,502 @@
   <nav class="mobile-nav" aria-label="Mobile navigation"><button class="nav-item active" data-page="home"><span>⌂</span>Home</button><button class="nav-item" data-page="goals"><span>◎</span>Goals</button><button class="nav-item" data-page="schedule"><span>▦</span>Schedule</button><button class="nav-item" data-page="focus"><span>◷</span>Focus</button><button class="nav-item" data-page="progress"><span>↗</span>Progress</button></nav>
   <dialog id="modal" class="modal"><form method="dialog" id="modalForm"><div class="modal-head"><div><p class="eyebrow green" id="modalEyebrow">A NEW STEP</p><h2 id="modalTitle">Add a goal</h2></div><button class="icon-button" value="cancel" aria-label="Close dialog">×</button></div><div id="modalBody" class="modal-body"></div><div class="modal-actions" id="modalActions"></div></form></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<a href="mailto:dhruvjoshi071@gmail.com?subject=Sankalp%20-%20Contact%20Us"
-   class="sankalp-contact-btn">
+```html
+<!-- ============================= -->
+<!-- SANKALP INFORMATION SECTION -->
+<!-- ============================= -->
 
-  <span class="contact-icon">✉</span>
+<section class="sankalp-info-section">
 
-  <span class="contact-text">
-    <strong>Contact Us</strong>
-    <small>Have an idea or suggestion?</small>
-  </span>
+  <div class="sankalp-info-container">
 
-  <span class="contact-arrow">→</span>
-</a>
+    <!-- Header -->
+    <div class="sankalp-info-header">
+      <span class="sankalp-info-badge">SANKALP</span>
+
+      <h2>Everything you need.</h2>
+
+      <p>
+        Learn more about Sankalp, your privacy, and how to get in touch with us.
+      </p>
+    </div>
+
+
+    <!-- Cards -->
+    <div class="sankalp-info-grid">
+
+      <!-- ABOUT -->
+      <a href="#about" class="sankalp-info-card">
+        <div class="info-card-icon">◎</div>
+
+        <div>
+          <h3>About Us</h3>
+          <p>Learn more about Sankalp and our mission.</p>
+        </div>
+
+        <span class="info-arrow">→</span>
+      </a>
+
+
+      <!-- PRIVACY -->
+      <a href="#privacy" class="sankalp-info-card">
+        <div class="info-card-icon">🔒</div>
+
+        <div>
+          <h3>Privacy Policy</h3>
+          <p>Understand how your data and documents are handled.</p>
+        </div>
+
+        <span class="info-arrow">→</span>
+      </a>
+
+
+      <!-- TERMS -->
+      <a href="#terms" class="sankalp-info-card">
+        <div class="info-card-icon">✓</div>
+
+        <div>
+          <h3>Terms & Conditions</h3>
+          <p>Read the rules and conditions for using Sankalp.</p>
+        </div>
+
+        <span class="info-arrow">→</span>
+      </a>
+
+
+      <!-- FAQ -->
+      <a href="#faq" class="sankalp-info-card">
+        <div class="info-card-icon">?</div>
+
+        <div>
+          <h3>FAQs</h3>
+          <p>Find answers to common questions about Sankalp.</p>
+        </div>
+
+        <span class="info-arrow">→</span>
+      </a>
+
+
+      <!-- CONTACT -->
+      <a
+        href="mailto:dhruvjoshi071@gmail.com?subject=Sankalp%20-%20Contact%20Us"
+        class="sankalp-contact-card"
+      >
+
+        <div class="contact-card-icon">✉</div>
+
+        <div>
+          <h3>Contact Us</h3>
+          <p>Have a suggestion, question, or feedback?</p>
+        </div>
+
+        <span class="contact-arrow">→</span>
+
+      </a>
+
+    </div>
+
+
+    <!-- Bottom -->
+    <div class="sankalp-info-bottom">
+
+      <div class="sankalp-logo-text">
+        <span>✦</span>
+        Sankalp
+      </div>
+
+      <p>
+        Built for students. Designed for focus.
+      </p>
+
+      <p class="sankalp-copyright">
+        © 2026 Sankalp. All rights reserved.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
 
 <style>
-.sankalp-contact-btn {
-  display: inline-flex;
+
+/* ============================= */
+/* MAIN SECTION */
+/* ============================= */
+
+.sankalp-info-section {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 80px 20px 110px;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(37, 99, 235, 0.10),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(34, 197, 94, 0.08),
+      transparent 35%
+    );
+}
+
+
+/* CONTAINER */
+
+.sankalp-info-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: auto;
+}
+
+
+/* ============================= */
+/* HEADER */
+/* ============================= */
+
+.sankalp-info-header {
+  text-align: center;
+  max-width: 650px;
+  margin: 0 auto 40px;
+}
+
+.sankalp-info-badge {
+  display: inline-block;
+
+  padding: 7px 12px;
+
+  border-radius: 999px;
+
+  background: rgba(37, 99, 235, 0.10);
+
+  color: #2563eb;
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.sankalp-info-header h2 {
+  margin: 14px 0 10px;
+
+  font-size: clamp(28px, 5vw, 42px);
+
+  letter-spacing: -1px;
+}
+
+.sankalp-info-header p {
+  margin: 0;
+
+  opacity: 0.65;
+
+  line-height: 1.6;
+}
+
+
+/* ============================= */
+/* GRID */
+/* ============================= */
+
+.sankalp-info-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 16px;
+}
+
+
+/* ============================= */
+/* NORMAL CARDS */
+/* ============================= */
+
+.sankalp-info-card,
+.sankalp-contact-card {
+
+  position: relative;
+
+  display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 13px 18px;
+
+  gap: 15px;
+
+  min-height: 95px;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  border-radius: 22px;
+
   text-decoration: none;
+
   color: inherit;
 
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
 
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 
   transition:
     transform 0.25s ease,
-    box-shadow 0.25s ease,
     border-color 0.25s ease,
-    background 0.25s ease;
+    box-shadow 0.25s ease;
 }
 
-.sankalp-contact-btn:hover {
-  transform: translateY(-3px);
-  border-color: rgba(37, 99, 235, 0.5);
-  background: rgba(37, 99, 235, 0.08);
-  box-shadow: 0 12px 35px rgba(37, 99, 235, 0.15);
+
+.sankalp-info-card:hover {
+
+  transform: translateY(-4px);
+
+  border-color: rgba(37, 99, 235, 0.35);
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.10);
 }
 
-.contact-icon {
-  width: 42px;
-  height: 42px;
+
+/* ============================= */
+/* ICON */
+/* ============================= */
+
+.info-card-icon,
+.contact-card-icon {
+
+  flex-shrink: 0;
+
+  width: 46px;
+  height: 46px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  border-radius: 13px;
+  border-radius: 15px;
 
-  background: linear-gradient(135deg, #2563eb, #4f8cff);
-  color: white;
+  background: rgba(37, 99, 235, 0.10);
 
-  font-size: 19px;
+  color: #2563eb;
 
-  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.3);
-}
-
-.contact-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 3px;
-}
-
-.contact-text strong {
-  font-size: 15px;
-}
-
-.contact-text small {
-  font-size: 12px;
-  opacity: 0.6;
-}
-
-.contact-arrow {
-  margin-left: 8px;
   font-size: 20px;
-  opacity: 0.6;
-  transition: transform 0.25s ease;
+
+  font-weight: 700;
 }
 
-.sankalp-contact-btn:hover .contact-arrow {
-  transform: translateX(4px);
+
+/* ============================= */
+/* CARD TEXT */
+/* ============================= */
+
+.sankalp-info-card h3,
+.sankalp-contact-card h3 {
+
+  margin: 0 0 5px;
+
+  font-size: 16px;
 }
+
+
+.sankalp-info-card p,
+.sankalp-contact-card p {
+
+  margin: 0;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+
+  opacity: 0.6;
+}
+
+
+/* ============================= */
+/* ARROW */
+/* ============================= */
+
+.info-arrow,
+.contact-arrow {
+
+  margin-left: auto;
+
+  font-size: 20px;
+
+  opacity: 0.45;
+
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+
+.sankalp-info-card:hover .info-arrow {
+
+  transform: translateX(5px);
+
+  opacity: 1;
+}
+
+
+/* ============================= */
+/* GREEN CONTACT CARD */
+/* ============================= */
+
+.sankalp-contact-card {
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(34, 197, 94, 0.13),
+      rgba(34, 197, 94, 0.04)
+    );
+
+  border-color: rgba(34, 197, 94, 0.25);
+}
+
+
+.sankalp-contact-card:hover {
+
+  transform: translateY(-4px);
+
+  border-color: rgba(34, 197, 94, 0.55);
+
+  box-shadow:
+    0 15px 40px rgba(34, 197, 94, 0.12);
+}
+
+
+.contact-card-icon {
+
+  background: rgba(34, 197, 94, 0.15);
+
+  color: #22c55e;
+}
+
+
+.sankalp-contact-card:hover .contact-arrow {
+
+  transform: translateX(5px);
+
+  opacity: 1;
+}
+
+
+/* ============================= */
+/* BOTTOM */
+/* ============================= */
+
+.sankalp-info-bottom {
+
+  margin-top: 55px;
+
+  padding-top: 25px;
+
+  border-top:
+    1px solid rgba(128, 128, 128, 0.15);
+
+  text-align: center;
+}
+
+
+.sankalp-logo-text {
+
+  font-size: 21px;
+
+  font-weight: 800;
+}
+
+
+.sankalp-logo-text span {
+
+  color: #2563eb;
+
+  margin-right: 5px;
+}
+
+
+.sankalp-info-bottom p {
+
+  margin: 8px 0;
+
+  opacity: 0.55;
+
+  font-size: 13px;
+}
+
+
+.sankalp-copyright {
+
+  font-size: 12px !important;
+
+  opacity: 0.4 !important;
+}
+
+
+/* ============================= */
+/* MOBILE */
+/* ============================= */
+
+@media (max-width: 650px) {
+
+  .sankalp-info-section {
+
+    padding:
+      65px 15px
+      130px;
+  }
+
+
+  .sankalp-info-grid {
+
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+
+  .sankalp-info-card,
+  .sankalp-contact-card {
+
+    min-height: 85px;
+
+    padding: 16px;
+
+    border-radius: 19px;
+  }
+
+
+  .info-card-icon,
+  .contact-card-icon {
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 13px;
+  }
+
+
+  .sankalp-info-card h3,
+  .sankalp-contact-card h3 {
+
+    font-size: 15px;
+  }
+
+
+  .sankalp-info-card p,
+  .sankalp-contact-card p {
+
+    font-size: 12px;
+  }
+}
+
 </style>
+```
+
 </body>
 </html>
