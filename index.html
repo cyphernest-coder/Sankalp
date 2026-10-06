@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <meta charset="utf-8">
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-F04HRR61V4"></script>
 <script>
@@ -10,10 +11,12 @@
 
   gtag('config', 'G-F04HRR61V4');
 </script>
-  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Sankalp is a simple, privacy-first study and goal tracking website that helps students plan, focus and track their progress.">
-  <meta name="theme-color" content="#080a0f">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#080a0f" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2322c55e'/%3E%3Ctext x='32' y='44' font-size='36' font-weight='800' text-anchor='middle' fill='%23061006' font-family='system-ui'%3ES%3C/text%3E%3C/svg%3E">
   <link rel="canonical" href="https://cyphernest-coder.github.io/Sankalp/">
   <meta property="og:title" content="Sankalp — Study. Focus. Achieve.">
   <meta property="og:description" content="Keep your संकल्प. Make it happen.">
@@ -633,6 +636,44 @@
       }
     }
 
+    /* ---- Polish layer: additive only ---- */
+
+    /* Scrollable mobile nav: nothing hidden */
+    .mobile-nav{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;overscroll-behavior-x:contain}
+    .mobile-nav::-webkit-scrollbar{display:none}
+    .mobile-nav .nav-item{flex:0 0 auto;min-width:72px;min-height:48px;scroll-snap-align:center}
+
+    /* Touch targets */
+    .examdesk-delete,.examdesk-note-delete{min-width:40px;min-height:40px;display:grid;place-items:center;border-radius:10px;transition:background .15s ease,color .15s ease}
+    .examdesk-delete:hover,.examdesk-note-delete:hover{background:rgba(239,68,68,.1)}
+    .examdesk-status{min-height:40px}
+
+    /* Chapter column labels */
+    .examdesk-chapter-head{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;padding:0 11px;font-size:10px;font-weight:800;letter-spacing:.08em;color:rgba(127,127,127,.85)}
+    .examdesk-chapter-head span{min-width:98px;text-align:center}
+    .examdesk-chapter-head span:first-child{min-width:0;text-align:left}
+    @media (max-width:560px){
+      .examdesk-chapter-head{display:none}
+      .examdesk-chapter .examdesk-status{position:relative}
+    }
+
+    /* Consistent motion + hover on Exam Desk */
+    .examdesk-item,.examdesk-note{transition:border-color .2s ease,transform .2s ease}
+    .examdesk-item:hover,.examdesk-note:hover{border-color:rgba(34,197,94,.35)}
+    @media (hover:hover){.examdesk-note:hover{transform:translateY(-2px)}}
+
+    /* Keyboard focus */
+    .examdesk-page :focus-visible,.sankalp-more-card > summary:focus-visible,.sankalp-contact-button:focus-visible,.mobile-nav .nav-item:focus-visible{outline:2px solid #22c55e;outline-offset:2px;border-radius:12px}
+
+    /* Smooth page entry */
+    .page.active{animation:sk-fade .25s ease both}
+    @keyframes sk-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+    }
+
   </style>
 
   <script src="app.js" defer></script>
@@ -1220,7 +1261,17 @@
       <footer class="site-footer"><span>Study. Focus. Achieve.</span><span>Your Sankalp data stays on this device unless you export it.</span></footer>
     </main>
   </div>
-  <nav class="mobile-nav" aria-label="Mobile navigation"><button class="nav-item active" data-page="home"><span>⌂</span>Home</button><button class="nav-item" data-page="goals"><span>◎</span>Goals</button><button class="nav-item" data-page="schedule"><span>▦</span>Schedule</button><button class="nav-item" data-page="focus"><span>◷</span>Focus</button><button class="nav-item" data-page="progress"><span>↗</span>Progress</button></nav>
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <button class="nav-item active" data-page="home"><span>⌂</span>Home</button>
+    <button class="nav-item" data-page="goals"><span>◎</span>Goals</button>
+    <button class="nav-item" data-page="schedule"><span>▦</span>Schedule</button>
+    <button class="nav-item" data-page="focus"><span>◷</span>Focus</button>
+    <button class="nav-item" data-page="files"><span>□</span>Files</button>
+    <button class="nav-item" data-page="progress"><span>↗</span>Progress</button>
+    <button class="nav-item" data-page="examdesk"><span>▤</span>Exam Desk</button>
+    <button class="nav-item" data-page="about"><span>ⓘ</span>About</button>
+    <button class="nav-item" data-page="settings"><span>⚙</span>Settings</button>
+  </nav>
   <dialog id="modal" class="modal"><form method="dialog" id="modalForm"><div class="modal-head"><div><p class="eyebrow green" id="modalEyebrow">A NEW STEP</p><h2 id="modalTitle">Add a goal</h2></div><button class="icon-button" value="cancel" aria-label="Close dialog">×</button></div><div id="modalBody" class="modal-body"></div><div class="modal-actions" id="modalActions"></div></form></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -1498,15 +1549,18 @@
         }
       }
 
-      list.innerHTML = upcoming.length ? upcoming.map(e => `
-        <div class="examdesk-item">
+      const all = [...data.exams].sort((a,b) => a.date.localeCompare(b.date));
+      list.innerHTML = all.length ? all.map(e => {
+        const past = daysUntil(e.date) < 0;
+        return `
+        <div class="examdesk-item"${past ? ' style="opacity:.6"' : ""}>
           <div class="examdesk-item-main">
             <strong>${esc(e.name)}</strong>
-            <small>${esc(e.subject || "No subject")} · ${esc(fmtDate(e.date))}${e.marks ? ` · ${esc(e.marks)} marks` : ""}</small>
+            <small>${esc(e.subject || "No subject")} · ${esc(fmtDate(e.date))}${e.marks ? ` · ${esc(e.marks)} marks` : ""}${past ? " · Completed" : ""}</small>
           </div>
-          <button class="examdesk-delete" data-delete-exam="${esc(e.id)}" aria-label="Delete exam">×</button>
-        </div>`).join("") :
-        `<div class="examdesk-empty">No upcoming exams.</div>`;
+          <button class="examdesk-delete" data-delete-exam="${esc(e.id)}" aria-label="Delete exam ${esc(e.name)}">×</button>
+        </div>`;
+      }).join("") : `<div class="examdesk-empty">No exams added yet.</div>`;
     }
 
     function renderSubjects() {
@@ -1553,13 +1607,16 @@
           <div class="examdesk-item" style="display:block;">
             <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
               <div class="examdesk-item-main"><strong>${esc(subject.name)}</strong><small>${chapters.length} chapter${chapters.length === 1 ? "" : "s"}</small></div>
-              <button class="examdesk-delete" data-delete-subject="${esc(subject.id)}" aria-label="Delete subject">×</button>
+              <button class="examdesk-delete" data-delete-subject="${esc(subject.id)}" aria-label="Delete subject ${esc(subject.name)}">×</button>
             </div>
             <div class="examdesk-progress">
               <div class="examdesk-progress-row"><span>Overall completion</span><strong>${pct}%</strong></div>
               <div class="examdesk-progress-track"><span style="width:${pct}%"></span></div>
             </div>
-            <div class="examdesk-chapters">${chapterHTML}</div>
+            <div class="examdesk-chapters">
+              <div class="examdesk-chapter-head" aria-hidden="true"><span>CHAPTER</span><span>SCHOOL</span><span>TUITION</span><span>PERSONAL</span></div>
+              ${chapterHTML}
+            </div>
           </div>`;
       }).join("");
 
@@ -1577,7 +1634,7 @@
 
       box.innerHTML = data.notes.length ? data.notes.map(n => `
         <article class="examdesk-note" data-color="${esc(n.color || "plain")}">
-          <button class="examdesk-note-delete" data-delete-note="${esc(n.id)}" aria-label="Delete note">×</button>
+          <button class="examdesk-note-delete" data-delete-note="${esc(n.id)}" aria-label="Delete note ${esc(n.title)}">×</button>
           <strong>${esc(n.title)}</strong>
           ${n.subject ? `<small>${esc(n.subject)}</small>` : ""}
           <p>${esc(n.text)}</p>
@@ -1630,6 +1687,16 @@
     document.getElementById("examdeskAddExam")?.addEventListener("click", openExamForm);
     document.getElementById("examdeskAddSubject")?.addEventListener("click", openSubjectForm);
     document.getElementById("examdeskAddNote")?.addEventListener("click", openNoteForm);
+
+    /* Keep the active mobile tab in view */
+    const syncNav = () => {
+      const a = document.querySelector(".mobile-nav .nav-item.active");
+      a?.scrollIntoView({inline:"center", block:"nearest", behavior:"smooth"});
+    };
+    document.addEventListener("click", e => {
+      if (e.target.closest("[data-page]")) setTimeout(syncNav, 60);
+    });
+    syncNav();
 
     render();
     setInterval(renderExams, 60000);
