@@ -262,6 +262,377 @@
         box-sizing: border-box;
       }
     }
+
+    /* =========================================================
+       SANKALP — EXAM DESK
+       Added without changing the existing Sankalp visual system.
+    ========================================================== */
+
+    .examdesk-page {
+      padding-bottom: 120px;
+    }
+
+    .examdesk-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .examdesk-full {
+      grid-column: 1 / -1;
+    }
+
+    .examdesk-card {
+      min-width: 0;
+    }
+
+    .examdesk-card h3 {
+      margin: 5px 0 5px;
+    }
+
+    .examdesk-countdown {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-top: 20px;
+      padding: 18px;
+      border: 1px solid rgba(34,197,94,.18);
+      border-radius: 16px;
+      background: rgba(34,197,94,.045);
+    }
+
+    .examdesk-days {
+      min-width: 92px;
+      text-align: center;
+    }
+
+    .examdesk-days strong {
+      display: block;
+      font-size: 42px;
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+
+    .examdesk-days small {
+      color: #22c55e;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+
+    .examdesk-exam-info {
+      min-width: 0;
+    }
+
+    .examdesk-exam-info strong {
+      display: block;
+      font-size: 17px;
+      overflow-wrap: anywhere;
+    }
+
+    .examdesk-exam-info span {
+      display: block;
+      margin-top: 4px;
+      color: rgba(127,127,127,.9);
+      font-size: 13px;
+    }
+
+    .examdesk-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .examdesk-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 14px;
+      border: 1px solid rgba(127,127,127,.15);
+      border-radius: 14px;
+      background: rgba(127,127,127,.035);
+    }
+
+    .examdesk-item-main {
+      min-width: 0;
+    }
+
+    .examdesk-item-main strong {
+      display: block;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .examdesk-item-main small {
+      display: block;
+      margin-top: 3px;
+      color: rgba(127,127,127,.85);
+      overflow-wrap: anywhere;
+    }
+
+    .examdesk-delete {
+      flex: 0 0 auto;
+      border: 0;
+      background: transparent;
+      color: rgba(127,127,127,.8);
+      cursor: pointer;
+      font-size: 18px;
+      padding: 5px;
+    }
+
+    .examdesk-delete:hover {
+      color: #ef4444;
+    }
+
+    .examdesk-progress {
+      margin-top: 12px;
+    }
+
+    .examdesk-progress-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    .examdesk-progress-track {
+      height: 7px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(127,127,127,.14);
+    }
+
+    .examdesk-progress-track span {
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      background: #22c55e;
+      transition: width .25s ease;
+    }
+
+    .examdesk-chapters {
+      display: grid;
+      gap: 9px;
+      margin-top: 15px;
+    }
+
+    .examdesk-chapter {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 11px;
+      border: 1px solid rgba(127,127,127,.14);
+      border-radius: 13px;
+      background: rgba(127,127,127,.035);
+    }
+
+    .examdesk-chapter-name {
+      min-width: 0;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .examdesk-status {
+      min-width: 98px;
+      padding: 8px 9px;
+      border: 1px solid rgba(127,127,127,.18);
+      border-radius: 9px;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-size: 11px;
+    }
+
+    .examdesk-notes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 11px;
+      margin-top: 15px;
+    }
+
+    .examdesk-note {
+      min-height: 125px;
+      padding: 15px;
+      border-radius: 15px;
+      border: 1px solid rgba(127,127,127,.15);
+      background: rgba(127,127,127,.055);
+      position: relative;
+    }
+
+    .examdesk-note[data-color="green"] {
+      border-color: rgba(34,197,94,.28);
+      background: rgba(34,197,94,.055);
+    }
+
+    .examdesk-note[data-color="gold"] {
+      border-color: rgba(234,179,8,.25);
+      background: rgba(234,179,8,.055);
+    }
+
+    .examdesk-note[data-color="blue"] {
+      border-color: rgba(59,130,246,.25);
+      background: rgba(59,130,246,.055);
+    }
+
+    .examdesk-note strong {
+      display: block;
+      padding-right: 24px;
+      overflow-wrap: anywhere;
+    }
+
+    .examdesk-note small {
+      display: block;
+      margin-top: 4px;
+      opacity: .55;
+    }
+
+    .examdesk-note p {
+      margin: 12px 0 0;
+      font-size: 13px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .examdesk-note-delete {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      border: 0;
+      background: transparent;
+      color: rgba(127,127,127,.75);
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .examdesk-suggestion {
+      margin-top: 15px;
+      padding: 13px 14px;
+      border-left: 3px solid #22c55e;
+      border-radius: 9px;
+      background: rgba(34,197,94,.055);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .examdesk-form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .examdesk-form .full {
+      grid-column: 1 / -1;
+    }
+
+    .examdesk-form label {
+      display: grid;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .examdesk-form input,
+    .examdesk-form textarea,
+    .examdesk-form select {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid rgba(127,127,127,.2);
+      border-radius: 11px;
+      background: transparent;
+      color: inherit;
+      padding: 10px 11px;
+      font: inherit;
+      outline: none;
+    }
+
+    .examdesk-form textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .examdesk-form input:focus,
+    .examdesk-form textarea:focus,
+    .examdesk-form select:focus {
+      border-color: rgba(34,197,94,.55);
+    }
+
+    .examdesk-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 11px;
+    }
+
+    .examdesk-empty {
+      padding: 18px;
+      border: 1px dashed rgba(127,127,127,.2);
+      border-radius: 14px;
+      text-align: center;
+      color: rgba(127,127,127,.8);
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .examdesk-grid {
+        grid-template-columns: 1fr;
+      }
+      .examdesk-full {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .examdesk-page {
+        padding-bottom: 150px;
+      }
+
+      .examdesk-countdown {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 13px;
+      }
+
+      .examdesk-days {
+        text-align: left;
+      }
+
+      .examdesk-days strong {
+        font-size: 38px;
+      }
+
+      .examdesk-form,
+      .examdesk-notes {
+        grid-template-columns: 1fr;
+      }
+
+      .examdesk-form .full {
+        grid-column: auto;
+      }
+
+      .examdesk-chapter {
+        grid-template-columns: 1fr;
+      }
+
+      .examdesk-status {
+        width: 100%;
+      }
+
+      .examdesk-actions {
+        justify-content: stretch;
+      }
+
+      .examdesk-actions .button {
+        flex: 1;
+      }
+    }
+
   </style>
 
   <script src="app.js" defer></script>
@@ -307,7 +678,132 @@
       
 
 </section>
-<section class="page" id="page-about">
+
+      <!-- =====================================================
+           SANKALP — EXAM DESK
+           New section added before About Us.
+           Existing pages/features remain untouched.
+      ====================================================== -->
+      <section class="page examdesk-page" id="page-examdesk">
+        <div class="page-intro">
+          <div>
+            <p class="eyebrow green">PLAN → PREPARE → PERFORM</p>
+            <h2>Exam Desk</h2>
+            <p class="muted">Keep your exams, syllabus, chapters and quick notes in one focused space.</p>
+          </div>
+          <button class="button primary" id="examdeskAddExam">＋ Add exam</button>
+        </div>
+
+        <div class="examdesk-grid">
+
+          <article class="card examdesk-card">
+            <div class="card-top">
+              <div>
+                <p class="eyebrow">NEXT EXAM</p>
+                <h3 id="examdeskNextExamTitle">No exam added yet</h3>
+              </div>
+              <span class="today-icon">◷</span>
+            </div>
+            <div id="examdeskCountdown" class="examdesk-countdown">
+              <div class="examdesk-days">
+                <strong id="examdeskDays">—</strong>
+                <small>DAYS LEFT</small>
+              </div>
+              <div class="examdesk-exam-info">
+                <strong id="examdeskNextExamMeta">Add your first exam to start the countdown.</strong>
+                <span id="examdeskNextExamDate"></span>
+              </div>
+            </div>
+            <div id="examdeskSuggestion" class="examdesk-suggestion">
+              Add an exam and your syllabus to get a simple preparation suggestion.
+            </div>
+          </article>
+
+          <article class="card examdesk-card">
+            <div class="card-top">
+              <div>
+                <p class="eyebrow">EXAMS</p>
+                <h3>Your upcoming exams</h3>
+              </div>
+            </div>
+            <div id="examdeskExamList" class="examdesk-list">
+              <div class="examdesk-empty">No exams added yet.</div>
+            </div>
+          </article>
+
+          <article class="card examdesk-card">
+            <div class="card-top">
+              <div>
+                <p class="eyebrow">SYLLABUS TRACKER</p>
+                <h3>Your subjects</h3>
+              </div>
+              <button class="button quiet small" id="examdeskAddSubject">＋ Subject</button>
+            </div>
+            <div id="examdeskSubjectList" class="examdesk-list">
+              <div class="examdesk-empty">Add a subject and its chapter names.</div>
+            </div>
+          </article>
+
+          <article class="card examdesk-card">
+            <div class="card-top">
+              <div>
+                <p class="eyebrow">PREPARATION</p>
+                <h3>What to do next</h3>
+              </div>
+            </div>
+            <div id="examdeskPrepSuggestion" class="examdesk-suggestion">
+              Your preparation suggestions will appear here.
+            </div>
+          </article>
+
+          <article class="card examdesk-card examdesk-full">
+            <div class="card-top">
+              <div>
+                <p class="eyebrow">QUICK NOTES</p>
+                <h3>Sticky notes</h3>
+              </div>
+              <button class="button primary small" id="examdeskAddNote">＋ New note</button>
+            </div>
+            <div id="examdeskNotes" class="examdesk-notes">
+              <div class="examdesk-empty">No quick notes yet. Add one for a formula, reminder, chapter, or idea.</div>
+            </div>
+          </article>
+
+          <article class="card examdesk-card examdesk-full">
+            <div class="card-top">
+              <div>
+                <p class="eyebrow">STUDY DESK</p>
+                <h3>Everything in one place</h3>
+              </div>
+            </div>
+            <div class="quick-grid">
+              <button class="quick-card" data-page="focus">
+                <span class="quick-icon">◷</span>
+                <strong>Focus session</strong>
+                <small>Start studying</small>
+              </button>
+              <button class="quick-card" data-page="schedule">
+                <span class="quick-icon">▦</span>
+                <strong>Timetable</strong>
+                <small>Plan your study time</small>
+              </button>
+              <button class="quick-card" data-page="files">
+                <span class="quick-icon">□</span>
+                <strong>Study files</strong>
+                <small>Open documents</small>
+              </button>
+              <button class="quick-card" data-page="progress">
+                <span class="quick-icon">↗</span>
+                <strong>Progress</strong>
+                <small>See your rhythm</small>
+              </button>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <section class="page" id="page-about">
         <section class="sankalp-more-section" id="sankalp-more">
 
         <div class="sankalp-more-heading">
@@ -726,13 +1222,417 @@
   <nav class="mobile-nav" aria-label="Mobile navigation"><button class="nav-item active" data-page="home"><span>⌂</span>Home</button><button class="nav-item" data-page="goals"><span>◎</span>Goals</button><button class="nav-item" data-page="schedule"><span>▦</span>Schedule</button><button class="nav-item" data-page="focus"><span>◷</span>Focus</button><button class="nav-item" data-page="progress"><span>↗</span>Progress</button></nav>
   <dialog id="modal" class="modal"><form method="dialog" id="modalForm"><div class="modal-head"><div><p class="eyebrow green" id="modalEyebrow">A NEW STEP</p><h2 id="modalTitle">Add a goal</h2></div><button class="icon-button" value="cancel" aria-label="Close dialog">×</button></div><div id="modalBody" class="modal-body"></div><div class="modal-actions" id="modalActions"></div></form></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<footer>
-    <div class="visitor-counter">
-        <span>Visitors:</span>
 
-        <script type="text/javascript" src="https://www.freevisitorcounters.com/auth.php?id=640447faab9fd4aee2bdb0538bc4994dc91d306f"></script>
-        <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1659012/t/9"></script>
-    </div>
-</footer>
+  <script>
+  /* =========================================================
+     SANKALP — EXAM DESK LOGIC
+     Local-only. Uses localStorage and does not affect existing
+     Sankalp app.js state.
+  ========================================================== */
+  (() => {
+    const KEY = "sankalp_exam_desk_v1";
+
+    const defaults = {
+      exams: [],
+      subjects: [],
+      notes: []
+    };
+
+    let data;
+    try {
+      data = JSON.parse(localStorage.getItem(KEY) || "null") || defaults;
+    } catch {
+      data = defaults;
+    }
+
+    data.exams = Array.isArray(data.exams) ? data.exams : [];
+    data.subjects = Array.isArray(data.subjects) ? data.subjects : [];
+    data.notes = Array.isArray(data.notes) ? data.notes : [];
+
+    const save = () => localStorage.setItem(KEY, JSON.stringify(data));
+    const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[c]));
+
+    const fmtDate = date => {
+      if (!date) return "";
+      const d = new Date(date + "T00:00:00");
+      return d.toLocaleDateString(undefined, {day:"numeric", month:"short", year:"numeric"});
+    };
+
+    const daysUntil = date => {
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const target = new Date(date + "T00:00:00");
+      return Math.ceil((target - today) / 86400000);
+    };
+
+    const showToast = msg => {
+      const toast = document.getElementById("toast");
+      if (toast) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2200);
+      }
+    };
+
+    function openExamForm() {
+      const modal = document.getElementById("modal");
+      const body = document.getElementById("modalBody");
+      const title = document.getElementById("modalTitle");
+      const eyebrow = document.getElementById("modalEyebrow");
+      const actions = document.getElementById("modalActions");
+      if (!modal || !body || !actions) return;
+
+      eyebrow.textContent = "EXAM DESK";
+      title.textContent = "Add an exam";
+      body.innerHTML = `
+        <div class="examdesk-form">
+          <label>Exam name
+            <input id="edExamName" required placeholder="e.g. Physics Unit Test">
+          </label>
+          <label>Subject
+            <input id="edExamSubject" placeholder="e.g. Physics">
+          </label>
+          <label>Exam date
+            <input id="edExamDate" type="date" required>
+          </label>
+          <label>Total marks
+            <input id="edExamMarks" type="number" min="1" placeholder="Optional">
+          </label>
+        </div>`;
+      actions.innerHTML = `
+        <button class="button quiet" value="cancel">Cancel</button>
+        <button class="button primary" id="edSaveExam" type="button">Save exam</button>`;
+
+      document.getElementById("edSaveExam").onclick = () => {
+        const name = document.getElementById("edExamName").value.trim();
+        const subject = document.getElementById("edExamSubject").value.trim();
+        const date = document.getElementById("edExamDate").value;
+        const marks = document.getElementById("edExamMarks").value.trim();
+
+        if (!name || !date) return showToast("Add the exam name and date.");
+
+        data.exams.push({
+          id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+          name, subject, date, marks
+        });
+        save();
+        modal.close();
+        render();
+        showToast("Exam added.");
+      };
+
+      if (typeof modal.showModal === "function") modal.showModal();
+    }
+
+    function openSubjectForm() {
+      const modal = document.getElementById("modal");
+      const body = document.getElementById("modalBody");
+      const title = document.getElementById("modalTitle");
+      const eyebrow = document.getElementById("modalEyebrow");
+      const actions = document.getElementById("modalActions");
+      if (!modal || !body || !actions) return;
+
+      eyebrow.textContent = "SYLLABUS TRACKER";
+      title.textContent = "Add a subject";
+      body.innerHTML = `
+        <div class="examdesk-form">
+          <label>Subject name
+            <input id="edSubjectName" required placeholder="Write your own subject name">
+          </label>
+          <label>Chapter names
+            <input id="edChapterFirst" placeholder="e.g. Units & Measurements">
+          </label>
+          <label class="full">More chapters
+            <textarea id="edChapterMore" placeholder="Write one chapter name per line"></textarea>
+          </label>
+        </div>
+        <p class="muted">You can add the chapter names now. Later, each chapter can be marked separately for School, Tuition and Personal study.</p>`;
+      actions.innerHTML = `
+        <button class="button quiet" value="cancel">Cancel</button>
+        <button class="button primary" id="edSaveSubject" type="button">Save subject</button>`;
+
+      document.getElementById("edSaveSubject").onclick = () => {
+        const name = document.getElementById("edSubjectName").value.trim();
+        const first = document.getElementById("edChapterFirst").value.trim();
+        const more = document.getElementById("edChapterMore").value
+          .split("\n").map(x => x.trim()).filter(Boolean);
+        const chapters = [...(first ? [first] : []), ...more];
+
+        if (!name) return showToast("Write the subject name.");
+        if (!chapters.length) return showToast("Add at least one chapter.");
+
+        data.subjects.push({
+          id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+          name,
+          chapters: chapters.map((chapter, i) => ({
+            id: `${Date.now()}-${i}`,
+            name: chapter,
+            school: "Not Started",
+            tuition: "Not Started",
+            personal: "Not Started"
+          }))
+        });
+
+        save();
+        modal.close();
+        render();
+        showToast("Subject added.");
+      };
+
+      if (typeof modal.showModal === "function") modal.showModal();
+    }
+
+    function openNoteForm() {
+      const modal = document.getElementById("modal");
+      const body = document.getElementById("modalBody");
+      const title = document.getElementById("modalTitle");
+      const eyebrow = document.getElementById("modalEyebrow");
+      const actions = document.getElementById("modalActions");
+      if (!modal || !body || !actions) return;
+
+      eyebrow.textContent = "QUICK NOTES";
+      title.textContent = "New sticky note";
+      body.innerHTML = `
+        <div class="examdesk-form">
+          <label>Title
+            <input id="edNoteTitle" required placeholder="e.g. Revise derivations">
+          </label>
+          <label>Subject
+            <input id="edNoteSubject" placeholder="Write your own subject">
+          </label>
+          <label class="full">Note
+            <textarea id="edNoteText" required placeholder="Write anything you want to remember..."></textarea>
+          </label>
+          <label>Note color
+            <select id="edNoteColor">
+              <option value="green">Green</option>
+              <option value="gold">Gold</option>
+              <option value="blue">Blue</option>
+              <option value="plain">Plain</option>
+            </select>
+          </label>
+        </div>`;
+      actions.innerHTML = `
+        <button class="button quiet" value="cancel">Cancel</button>
+        <button class="button primary" id="edSaveNote" type="button">Save note</button>`;
+
+      document.getElementById("edSaveNote").onclick = () => {
+        const titleValue = document.getElementById("edNoteTitle").value.trim();
+        const subject = document.getElementById("edNoteSubject").value.trim();
+        const textValue = document.getElementById("edNoteText").value.trim();
+        const color = document.getElementById("edNoteColor").value;
+
+        if (!titleValue || !textValue) return showToast("Add a title and note.");
+
+        data.notes.unshift({
+          id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+          title: titleValue,
+          subject,
+          text: textValue,
+          color
+        });
+
+        save();
+        modal.close();
+        render();
+        showToast("Note saved.");
+      };
+
+      if (typeof modal.showModal === "function") modal.showModal();
+    }
+
+    function renderExams() {
+      const list = document.getElementById("examdeskExamList");
+      const title = document.getElementById("examdeskNextExamTitle");
+      const meta = document.getElementById("examdeskNextExamMeta");
+      const dateEl = document.getElementById("examdeskNextExamDate");
+      const daysEl = document.getElementById("examdeskDays");
+      const suggestion = document.getElementById("examdeskSuggestion");
+      if (!list) return;
+
+      const upcoming = [...data.exams]
+        .filter(e => daysUntil(e.date) >= 0)
+        .sort((a,b) => a.date.localeCompare(b.date));
+
+      const next = upcoming[0];
+
+      if (!next) {
+        title.textContent = "No exam added yet";
+        meta.textContent = "Add your first exam to start the countdown.";
+        dateEl.textContent = "";
+        daysEl.textContent = "—";
+        suggestion.textContent = "Add an exam and your syllabus to get a simple preparation suggestion.";
+      } else {
+        const left = daysUntil(next.date);
+        title.textContent = next.name;
+        meta.textContent = [next.subject, next.marks ? `${next.marks} marks` : ""].filter(Boolean).join(" · ") || "Exam";
+        dateEl.textContent = fmtDate(next.date);
+        daysEl.textContent = left === 0 ? "0" : String(left);
+
+        const subject = data.subjects.find(s =>
+          next.subject && s.name.toLowerCase() === next.subject.toLowerCase()
+        );
+        if (subject) {
+          const incomplete = subject.chapters.filter(c =>
+            [c.school,c.tuition,c.personal].some(v => v !== "Completed")
+          ).length;
+          const total = subject.chapters.length;
+          if (incomplete && left > 0) {
+            const pace = Math.max(1, Math.ceil(incomplete / left));
+            suggestion.textContent =
+              `${incomplete} of ${total} chapter${total === 1 ? "" : "s"} still need work. A reasonable target is about ${pace} chapter${pace === 1 ? "" : "s"} of progress per day, while keeping time for revision.`;
+          } else if (!incomplete) {
+            suggestion.textContent = "Your tracked syllabus is complete. Use the remaining time for revision and practice.";
+          } else {
+            suggestion.textContent = "The exam date has arrived. Focus on your final revision and the most important topics.";
+          }
+        } else if (left <= 3) {
+          suggestion.textContent = "The exam is close. Prioritize revision, important questions and topics you already know need attention.";
+        } else if (left <= 7) {
+          suggestion.textContent = "Build a short daily plan, finish the highest-priority topics first, then leave time for revision.";
+        } else {
+          suggestion.textContent = "You have some breathing room. Spread the syllabus across the available days instead of leaving it to the end.";
+        }
+      }
+
+      list.innerHTML = upcoming.length ? upcoming.map(e => `
+        <div class="examdesk-item">
+          <div class="examdesk-item-main">
+            <strong>${esc(e.name)}</strong>
+            <small>${esc(e.subject || "No subject")} · ${esc(fmtDate(e.date))}${e.marks ? ` · ${esc(e.marks)} marks` : ""}</small>
+          </div>
+          <button class="examdesk-delete" data-delete-exam="${esc(e.id)}" aria-label="Delete exam">×</button>
+        </div>`).join("") :
+        `<div class="examdesk-empty">No upcoming exams.</div>`;
+    }
+
+    function renderSubjects() {
+      const list = document.getElementById("examdeskSubjectList");
+      const prep = document.getElementById("examdeskPrepSuggestion");
+      if (!list) return;
+
+      if (!data.subjects.length) {
+        list.innerHTML = `<div class="examdesk-empty">Add a subject and its chapter names.</div>`;
+        if (prep) prep.textContent = "Start by adding a subject and writing its actual chapter names.";
+        return;
+      }
+
+      let total = 0, done = 0;
+
+      list.innerHTML = data.subjects.map(subject => {
+        const chapters = Array.isArray(subject.chapters) ? subject.chapters : [];
+        const chapterHTML = chapters.map(ch => {
+          total += 3;
+          done += ["school","tuition","personal"].filter(k => ch[k] === "Completed").length;
+
+          return `
+            <div class="examdesk-chapter">
+              <div class="examdesk-chapter-name">${esc(ch.name)}</div>
+              ${["school","tuition","personal"].map(k => `
+                <select class="examdesk-status"
+                  data-subject-id="${esc(subject.id)}"
+                  data-chapter-id="${esc(ch.id)}"
+                  data-source="${k}"
+                  aria-label="${esc(k)} progress for ${esc(ch.name)}">
+                  ${["Not Started","In Progress","Completed"].map(v =>
+                    `<option ${ch[k] === v ? "selected" : ""}>${v}</option>`
+                  ).join("")}
+                </select>`).join("")}
+            </div>`;
+        }).join("");
+
+        const possible = chapters.length * 3;
+        const complete = chapters.reduce((sum, ch) =>
+          sum + ["school","tuition","personal"].filter(k => ch[k] === "Completed").length, 0);
+        const pct = possible ? Math.round((complete / possible) * 100) : 0;
+
+        return `
+          <div class="examdesk-item" style="display:block;">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
+              <div class="examdesk-item-main"><strong>${esc(subject.name)}</strong><small>${chapters.length} chapter${chapters.length === 1 ? "" : "s"}</small></div>
+              <button class="examdesk-delete" data-delete-subject="${esc(subject.id)}" aria-label="Delete subject">×</button>
+            </div>
+            <div class="examdesk-progress">
+              <div class="examdesk-progress-row"><span>Overall completion</span><strong>${pct}%</strong></div>
+              <div class="examdesk-progress-track"><span style="width:${pct}%"></span></div>
+            </div>
+            <div class="examdesk-chapters">${chapterHTML}</div>
+          </div>`;
+      }).join("");
+
+      const overall = total ? Math.round((done / total) * 100) : 0;
+      if (prep) {
+        prep.textContent = overall === 100
+          ? "All tracked School, Tuition and Personal progress is complete. Shift your attention to revision and practice."
+          : `${overall}% of your tracked School, Tuition and Personal syllabus progress is complete. Work on the chapters with the most unfinished areas first.`;
+      }
+    }
+
+    function renderNotes() {
+      const box = document.getElementById("examdeskNotes");
+      if (!box) return;
+
+      box.innerHTML = data.notes.length ? data.notes.map(n => `
+        <article class="examdesk-note" data-color="${esc(n.color || "plain")}">
+          <button class="examdesk-note-delete" data-delete-note="${esc(n.id)}" aria-label="Delete note">×</button>
+          <strong>${esc(n.title)}</strong>
+          ${n.subject ? `<small>${esc(n.subject)}</small>` : ""}
+          <p>${esc(n.text)}</p>
+        </article>`).join("") :
+        `<div class="examdesk-empty">No quick notes yet. Add one for a formula, reminder, chapter, or idea.</div>`;
+    }
+
+    function render() {
+      renderExams();
+      renderSubjects();
+      renderNotes();
+    }
+
+    document.addEventListener("click", event => {
+      const examDelete = event.target.closest("[data-delete-exam]");
+      if (examDelete) {
+        data.exams = data.exams.filter(e => e.id !== examDelete.dataset.deleteExam);
+        save(); render(); showToast("Exam removed.");
+        return;
+      }
+
+      const subjectDelete = event.target.closest("[data-delete-subject]");
+      if (subjectDelete) {
+        data.subjects = data.subjects.filter(s => s.id !== subjectDelete.dataset.deleteSubject);
+        save(); render(); showToast("Subject removed.");
+        return;
+      }
+
+      const noteDelete = event.target.closest("[data-delete-note]");
+      if (noteDelete) {
+        data.notes = data.notes.filter(n => n.id !== noteDelete.dataset.deleteNote);
+        save(); render(); showToast("Note removed.");
+        return;
+      }
+    });
+
+    document.addEventListener("change", event => {
+      const select = event.target.closest(".examdesk-status");
+      if (!select) return;
+
+      const subject = data.subjects.find(s => s.id === select.dataset.subjectId);
+      const chapter = subject?.chapters.find(c => c.id === select.dataset.chapterId);
+      if (!chapter) return;
+
+      chapter[select.dataset.source] = select.value;
+      save();
+      render();
+    });
+
+    document.getElementById("examdeskAddExam")?.addEventListener("click", openExamForm);
+    document.getElementById("examdeskAddSubject")?.addEventListener("click", openSubjectForm);
+    document.getElementById("examdeskAddNote")?.addEventListener("click", openNoteForm);
+
+    render();
+    setInterval(renderExams, 60000);
+  })();
+  </script>
 </body>
 </html>
