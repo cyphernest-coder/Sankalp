@@ -12,6 +12,8 @@
   gtag('config', 'G-F04HRR61V4');
 </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow">
+  <meta name="twitter:card" content="summary">
   <meta name="description" content="Sankalp is a simple, privacy-first study and goal tracking website that helps students plan, focus and track their progress.">
   <meta name="color-scheme" content="dark light">
   <meta name="theme-color" content="#080a0f" media="(prefers-color-scheme: dark)">
@@ -675,6 +677,92 @@
     }
 
   </style>
+<style id="sankalp-design-v2">
+/* SANKALP v2 design layer: visual only. Markup, IDs and JS untouched. Works in light + dark (neutral alphas). */
+:root{--sk-a:#22c55e;--sk-a2:#14b8a6;--sk-a3:#a3e635;--sk-r:20px;--sk-line:rgba(127,127,127,.2);--sk-glass:rgba(127,127,127,.07);--sk-ease:cubic-bezier(.2,.8,.2,1)}
+html{scroll-behavior:smooth}
+body{font-family:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;
+background-image:radial-gradient(900px 480px at 85% -10%,rgba(34,197,94,.14),transparent 60%),radial-gradient(700px 420px at -5% 105%,rgba(20,184,166,.11),transparent 60%);background-attachment:fixed}
+h1,h2,h3{letter-spacing:-.025em;text-wrap:balance}
+.eyebrow{letter-spacing:.14em;font-weight:700;font-size:.7rem}
+.eyebrow.green{background:linear-gradient(90deg,var(--sk-a),var(--sk-a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+:focus-visible{outline:3px solid var(--sk-a);outline-offset:3px;border-radius:10px}
+/* Sidebar */
+.sidebar{backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);border-right:1px solid var(--sk-line)}
+.brand-mark{background:linear-gradient(135deg,var(--sk-a),var(--sk-a2))!important;color:#04130a!important;box-shadow:0 8px 24px -6px rgba(34,197,94,.55);border-radius:14px}
+.brand small{opacity:.65;font-weight:500}
+.nav-item{border-radius:14px;transition:background .2s,transform .2s var(--sk-ease),color .2s;position:relative;min-height:44px}
+.nav-item:hover{background:var(--sk-glass);transform:translateX(2px)}
+.nav-item.active{background:linear-gradient(90deg,rgba(34,197,94,.2),rgba(20,184,166,.07))!important;box-shadow:inset 3px 0 0 var(--sk-a)}
+.privacy-dot{box-shadow:0 0 0 4px rgba(34,197,94,.18);animation:skPulse 2.4s infinite}
+@keyframes skPulse{50%{box-shadow:0 0 0 8px rgba(34,197,94,0)}}
+/* Topbar */
+.topbar{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.topbar h1{font-size:clamp(1.5rem,3.6vw,2.3rem);font-weight:800}
+.avatar{background:linear-gradient(135deg,var(--sk-a),var(--sk-a2))!important;color:#04130a!important;font-weight:800;box-shadow:0 6px 18px -6px rgba(34,197,94,.6);transition:transform .2s var(--sk-ease)}
+.avatar:hover{transform:scale(1.08) rotate(-4deg)}
+/* Hero */
+.welcome-row{position:relative;overflow:hidden;padding:clamp(22px,4vw,40px);border-radius:28px;border:1px solid var(--sk-line);background:linear-gradient(135deg,rgba(34,197,94,.16),rgba(20,184,166,.07) 55%,var(--sk-glass));gap:20px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+.welcome-row::before{content:"";position:absolute;right:-60px;top:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(163,230,53,.28),transparent 68%);animation:skFloat 9s ease-in-out infinite;pointer-events:none}
+.welcome-row>*{position:relative}
+.welcome-row h2{font-size:clamp(1.9rem,5.6vw,3.4rem);line-height:1.05;font-weight:800;margin:.25em 0 .3em}
+.welcome-row h2 span{background:linear-gradient(90deg,var(--sk-a),var(--sk-a3));-webkit-background-clip:text;background-clip:text;color:transparent}
+@keyframes skFloat{50%{transform:translate(-26px,22px) scale(1.12)}}
+/* Cards */
+.card,.quick-card,.sankalp-more-card{border-radius:var(--sk-r)!important;border:1px solid var(--sk-line)!important;background:var(--sk-glass);box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 14px 34px -22px rgba(0,0,0,.45);transition:transform .25s var(--sk-ease),border-color .25s,box-shadow .25s}
+.card:hover,.quick-card:hover{border-color:rgba(34,197,94,.45)!important;box-shadow:0 18px 40px -20px rgba(34,197,94,.35)}
+.quick-card:hover{transform:translateY(-4px)}
+.quick-card:active,.button:active{transform:scale(.97)}
+.quick-icon,.today-icon{background:linear-gradient(135deg,rgba(34,197,94,.25),rgba(20,184,166,.12));border-radius:14px}
+.daily-card{background:linear-gradient(160deg,rgba(34,197,94,.14),var(--sk-glass))}
+.motivation blockquote{font-size:clamp(1.05rem,2.4vw,1.35rem);line-height:1.45;font-weight:600}
+/* Buttons */
+.button{border-radius:14px;min-height:44px;font-weight:700;transition:transform .2s var(--sk-ease),box-shadow .25s,background .2s}
+.button.primary{background:linear-gradient(135deg,var(--sk-a),var(--sk-a2))!important;color:#04130a!important;border:0;box-shadow:0 10px 26px -10px rgba(34,197,94,.7)}
+.button.primary:hover{transform:translateY(-2px);box-shadow:0 16px 32px -10px rgba(34,197,94,.8)}
+.icon-button{min-width:44px;min-height:44px;border-radius:14px}
+input,select,textarea{border-radius:12px;min-height:44px;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--sk-a)!important;box-shadow:0 0 0 4px rgba(34,197,94,.18);outline:0}
+/* Progress bars */
+.progress-track{border-radius:99px;overflow:hidden}
+.progress-track>span,#dailyBar{background:linear-gradient(90deg,var(--sk-a),var(--sk-a3))!important;border-radius:99px;transition:width .9s var(--sk-ease)}
+/* Focus: immersive timer */
+.focus-card{text-align:center;background:radial-gradient(520px 300px at 50% 0,rgba(34,197,94,.18),transparent 70%),var(--sk-glass);border-radius:28px!important}
+.timer{font-variant-numeric:tabular-nums;font-weight:800;letter-spacing:-.03em;font-size:clamp(2.6rem,12vw,5.6rem);background:linear-gradient(180deg,currentColor,rgba(127,127,127,.7));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 28px rgba(34,197,94,.3))}
+.timer-state{justify-content:center}
+.live-dot{box-shadow:0 0 0 4px rgba(34,197,94,.2)}
+.focus-controls{justify-content:center;flex-wrap:wrap;gap:10px}
+/* Exam Desk and About */
+.examdesk-countdown strong{font-size:clamp(2.4rem,9vw,4rem);font-weight:800;background:linear-gradient(135deg,var(--sk-a),var(--sk-a3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sankalp-more-card[open]{box-shadow:0 18px 40px -22px rgba(34,197,94,.4)}
+/* Modal + toast */
+.modal{border-radius:24px;border:1px solid var(--sk-line);box-shadow:0 40px 90px -20px rgba(0,0,0,.6);max-width:min(560px,calc(100vw - 24px));animation:skPop .28s var(--sk-ease)}
+.modal::backdrop{backdrop-filter:blur(6px);background:rgba(0,0,0,.45)}
+@keyframes skPop{from{opacity:0;transform:translateY(14px) scale(.97)}}
+.toast{border-radius:14px;backdrop-filter:blur(14px)}
+/* Page + card entrance */
+.page.active{animation:skPage .45s var(--sk-ease)}
+.page.active .card,.page.active .quick-card,.page.active .goal-list>*{animation:skUp .5s var(--sk-ease) both}
+.page.active .quick-card:nth-child(2),.page.active .card:nth-of-type(2){animation-delay:.06s}
+.page.active .quick-card:nth-child(3){animation-delay:.12s}
+.page.active .quick-card:nth-child(4){animation-delay:.18s}
+@keyframes skPage{from{opacity:0}}
+@keyframes skUp{from{opacity:0;transform:translateY(14px)}}
+/* Mobile */
+@media(max-width:900px){
+.welcome-row{border-radius:22px}.welcome-row .button{width:100%;justify-content:center}
+.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.mobile-nav{display:flex!important;overflow-x:auto;gap:4px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));scroll-snap-type:x proximity;scrollbar-width:none;backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);border-top:1px solid var(--sk-line)}
+.mobile-nav::-webkit-scrollbar{display:none}
+.mobile-nav .nav-item{flex:0 0 auto;min-width:72px;flex-direction:column;gap:2px;font-size:.68rem;padding:6px 10px;scroll-snap-align:center;transform:none!important;box-shadow:none}
+.mobile-nav .nav-item.active{background:rgba(34,197,94,.2)!important;box-shadow:none}
+.main-area{padding-bottom:110px;max-width:100vw}
+img,video,canvas,table{max-width:100%}
+}
+@media(max-width:420px){.grid.two{grid-template-columns:1fr!important}.card{padding:16px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+
 
   <script src="app.js" defer></script>
 </head>
